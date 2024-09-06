@@ -1,15 +1,19 @@
 import React from 'react';
+import { Typography, Container, Paper } from '@mui/material';
 import BookList from '../components/BookList';
 
-function Home() {
+export default function Home() {
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <div className="max-w-full mx-auto px-4">
-        <h1 className="text-4xl font-extrabold mb-12 text-center text-gray-800">Library Management System</h1>
+    <Container maxWidth="xl" className="py-8">
+      <Paper elevation={3} className="p-8 bg-white rounded-lg">
+        <Typography variant="h3" component="h1" className="mb-8 text-center font-bold text-primary">
+          Welcome to the Library Management System
+        </Typography>
+        <Typography variant="h5" className="mb-6 text-center text-gray-600">
+          Explore our vast collection of books across various categories
+        </Typography>
         <BookList />
-      </div>
-    </div>
+      </Paper>
+    </Container>
   );
 }
-
-export default Home;

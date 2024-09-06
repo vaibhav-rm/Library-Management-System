@@ -14,7 +14,7 @@ function App() {
     <Router>
       <Navbar onMenuClick={() => setSidebarOpen(true)} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="ml-64 p-4">
+      <div className="p-4">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<Books />} />

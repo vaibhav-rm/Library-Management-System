@@ -1,10 +1,17 @@
 import React from 'react';
+import { Typography, Button } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function BookRow({ books, branch }) {
   return (
     <div className="mb-8">
-      <h2 className="text-2xl font-semibold mb-4">{branch}</h2>
-      <div className="flex overflow-x-auto scrollbar-hide space-x-4 pb-6">
+      <div className="flex justify-between items-center mb-4">
+        <Typography variant="h5" className="font-semibold text-primary">{branch}</Typography>
+        <Button endIcon={<ArrowForwardIcon />} color="primary">
+          View All
+        </Button>
+      </div>
+      <div className="flex overflow-x-auto space-x-4 pb-6">
         {books.slice(0, 10).map((book) => (
           <div
             key={book.id}
@@ -13,20 +20,13 @@ function BookRow({ books, branch }) {
             <img
               src={book.coverImage}
               alt={book.title}
-              className="w-full h-[250px] object-cover rounded-lg shadow-lg"
+              className="w-full h-[200px] object-cover rounded-lg shadow-md"
             />
-            <p className="text-center mt-2 text-base font-medium truncate">{book.title}</p>
+            <Typography variant="body2" className="mt-2 font-medium text-center truncate">
+              {book.title}
+            </Typography>
           </div>    
         ))}
-        {books.length > 10 && (
-          <div className="min-w-[150px] flex-shrink-0">
-            <div className="w-full h-[250px] flex items-center justify-center bg-gray-200 rounded-lg shadow-lg">
-              <button className="text-blue-600 underline whitespace-nowrap">
-                Show more of this branch
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
