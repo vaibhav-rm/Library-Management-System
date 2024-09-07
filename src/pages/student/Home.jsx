@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Container, Paper } from '@mui/material';
-import BookList from '../components/BookList';
+import BookList from '../../components/BookList';
 
 export default function Home() {
   return (

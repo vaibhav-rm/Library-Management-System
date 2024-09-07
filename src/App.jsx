@@ -5,10 +5,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import Home from './pages/Home';
-import Books from './pages/Books';
-import Users from './pages/Users';
-import Admin from './pages/Admin';
+import Home from './pages/student/Home';
+import Books from './pages/student/Books';
+import Users from './pages/admin/Users';
+import Admin from './pages/admin/Admin';
+import StudentLayout from './Layouts/StudentLayout'
+import AdminLayout from './Layouts/AdminLayout'
 import Login from './pages/Login';
 import Register from './pages/Register';
 
@@ -23,16 +25,10 @@ function App() {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="p-4">
         <Routes>
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
- 
-          <Route path="/" element={<Home />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/admin" element={<Admin />} />
-
+          <Route path="/student/*" element={<StudentLayout />} />
+          <Route path="/admin/*" element={<AdminLayout />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>

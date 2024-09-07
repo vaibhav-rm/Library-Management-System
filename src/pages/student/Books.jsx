@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Container, Paper, TextField, InputAdornment, Grid, Chip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import BookList from '../components/BookList';
+import BookList from '../../components/BookList';
 
 const categories = ['Fiction', 'Non-Fiction', 'Science', 'History', 'Biography', 'Technology', 'Art', 'Philosophy'];
 
