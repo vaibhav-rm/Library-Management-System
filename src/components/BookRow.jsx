@@ -1,8 +1,15 @@
 import React from 'react';
 import { Typography, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
 
 function BookRow({ books, branch }) {
+  const navigate = useNavigate();
+
+  const handleBookClick = (bookId) => {
+    navigate(`/student/books/${bookId}`);
+  };
+
   return (
     <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
@@ -15,7 +22,8 @@ function BookRow({ books, branch }) {
         {books.slice(0, 10).map((book) => (
           <div
             key={book.id}
-            className="min-w-[150px] flex-shrink-0 transition-transform transform hover:scale-105"
+            className="min-w-[150px] flex-shrink-0 transition-transform transform hover:scale-105 cursor-pointer"
+            onClick={() => handleBookClick(book.id)}
           >
             <img
               src={book.coverImage}
