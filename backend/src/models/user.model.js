@@ -37,7 +37,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['student', 'admin'],
+        enum: ["student", "admin"],
         required: true
     },
     borrowHistory: [
