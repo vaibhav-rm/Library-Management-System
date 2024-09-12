@@ -9,28 +9,19 @@ const bookSchema = new Schema({
         trim: true,
         index: true
     },
-    author: {
+    author: [{
         type: Schema.Types.ObjectId,
         ref: "Author",
         required: true,
         lowercase: true,
         trim: true,
-    },
+    }],
     isbn: {
         type: String,
         required: true,
         lowercase: true,
         trim: true,
     },
-    genre: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Genre",
-            required: true,
-            lowercase: true,
-            trim: true,
-        }
-    ],
     publicationYear: {
         type: Number,
         required: true,
@@ -45,6 +36,10 @@ const bookSchema = new Schema({
     },
     location: {
         type: String,
+    },
+    branch: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Branch"
     }
 }, {timestamps :true})
 
