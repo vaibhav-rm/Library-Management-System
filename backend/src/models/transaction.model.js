@@ -1,33 +1,32 @@
-import mongoose, {Schema} from "mongoose";
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+import mongoose, { Schema } from "mongoose";
 
 const transactionSchema = new Schema({
-    transactionType: {
-        type: String,
-        enum: [ "borrow", "return", "reserve"],
-        required: true,
-        lowercase: true,
-        trim: true,
-        index: true
+    status: { 
+        type: String, 
+        required: true, 
+        enum: ['borrowed', 'returned', 'overdue'] 
     },
-    transactionDate: {
-        type: Date,
-        value: Date.now,
-        required: true,
-        lowercase: true,
-        trim: true,
+    borrowDate: { 
+        type: Date, 
+        required: true 
     },
-    dueDate: {
-        type: Date
+    dueDate: { 
+        type: Date, 
+        required: true 
     },
-    returnDate: {
-        type: Date
+    returnDate: { 
+        type: Date 
     },
-    status: {
-        type: String,
-        enum: ["pending", ] 
+    userId: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true 
+    },
+    bookId: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Book', 
+        required: true 
     }
-
-})
+  }, { timestamps: true });
 
 export const Transaction = mongoose.model("Transaction", transactionSchema)
