@@ -21,8 +21,8 @@ export default function AddTransaction() {
     const fetchData = async () => {
       try {
         const [usersResponse, booksResponse] = await Promise.all([
-          fetch('/api/users'),
-          fetch('/api/books')
+          fetch('http://localhost:8000/api/v1/users'),
+          fetch('http://localhost:8000/api/v1/books')
         ]);
         const usersData = await usersResponse.json();
         const booksData = await booksResponse.json();
@@ -47,17 +47,11 @@ export default function AddTransaction() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/transactions', {
+      const response = await fetch('http://localhost:8000/api/v1/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(transaction),
       });
-      if (response.ok) {
-        setSnackbar({ open: true, message: 'Transaction added successfully!', severity: 'success' });
-        setTransaction({ status: '', borrowDate: null, dueDate: null, userId: '', bookId: '' });
-      } else {
-        throw new Error('Failed to add transaction');
-      }
     } catch (error) {
       setSnackbar({ open: true, message: 'Failed to add transaction. Please try again.', severity: 'error' });
     }

@@ -1,42 +1,75 @@
-import React, { useState } from 'react';
-import { Container, Typography, Button, Grid, TextField, InputAdornment } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Container, Typography, Button, Grid, TextField, InputAdornment, CircularProgress } from '@mui/material';
 import { Add, Search } from '@mui/icons-material';
 import BookForm from '../../components/BookForm';
 import BookTable from '../../components/BookTable';
-
-// Dummy data for demonstration
-const initialBooks = [
-  { id: 1, title: 'To Kill a Mockingbird', author: 'Harper Lee', isbn: '9780446310789', category: 'Fiction', publicationYear: 1960, quantity: 5 },
-  { id: 2, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', isbn: '9780743273565', category: 'Fiction', publicationYear: 1925, quantity: 3 },
-  // Add more dummy books as needed
-];
+import axios from 'axios';
 
 export default function BookManagement() {
-  const [books, setBooks] = useState(initialBooks);
+  const [books, setBooks] = useState([]);
   const [isAddingBook, setIsAddingBook] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const handleAddBook = (newBook) => {
-    setBooks([...books, { ...newBook, id: books.length + 1 }]);
-    setIsAddingBook(false);
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/books');
+      setBooks(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+      setLoading(false);
+    }
   };
 
-  const handleEditBook = (updatedBook) => {
-    setBooks(books.map((book) => (book.id === updatedBook.id ? updatedBook : book)));
-    setEditingBook(null);
+  const handleAddBook = async (newBook) => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/books', newBook);
+      setBooks([...books, response.data]);
+      setIsAddingBook(false);
+    } catch (error) {
+      console.error('Error adding book:', error);
+    }
   };
 
-  const handleDeleteBook = (id) => {
-    setBooks(books.filter((book) => book.id !== id));
+  const handleEditBook = async (updatedBook) => {
+    try {
+      await axios.put(`/api/books/${updatedBook._id}`, updatedBook);
+      setBooks(books.map((book) => (book._id === updatedBook._id ? updatedBook : book)));
+      setEditingBook(null);
+    } catch (error) {
+      console.error('Error updating book:', error);
+    }
+  };
+
+  const handleDeleteBook = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/books/${id}`);
+      setBooks(books.filter((book) => book._id !== id));
+    } catch (error) {
+      console.error('Error deleting book:', error);
+    }
   };
 
   const filteredBooks = books.filter(
     (book) =>
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       book.isbn.includes(searchTerm)
   );
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4, display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

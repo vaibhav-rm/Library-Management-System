@@ -2,11 +2,13 @@ import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Typography, useTheme } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import BookIcon from '@mui/icons-material/Book';
+import BookIcon from '@mui/icons-material/Book';    
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import AttributionIcon from '@mui/icons-material/Attribution';
 
 function AdminSidebar({ isOpen, onClose }) {
   const theme = useTheme();
@@ -18,6 +20,8 @@ function AdminSidebar({ isOpen, onClose }) {
     { text: 'User Management', icon: <PeopleIcon />, path: '/admin/users' },
     { text: 'Borrowing Management', icon: <MenuBookIcon />, path: '/admin/borrowings' },
     { text: 'Reports', icon: <AssessmentIcon />, path: '/admin/reports' },
+    { text: 'Add Author', icon: <AttributionIcon />, path: '/admin/addAuthor' },
+    { text: 'Add Transaction', icon: <ReceiptIcon />, path: '/admin/addTransaction' },
     { text: 'Settings', icon: <SettingsIcon />, path: '/admin/settings' },
   ];
 

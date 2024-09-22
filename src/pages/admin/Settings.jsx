@@ -12,7 +12,7 @@ import {
 
 export default function Settings() {
   const [settings, setSettings] = useState({
-    libraryName: 'Central Library',
+    libraryName: 'Government Polytechnic College Library',
     maxBooksPerUser: 5,
     loanDuration: 14,
     lateFeePerDay: 0.50,
@@ -45,6 +45,7 @@ export default function Settings() {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                disabled="true"
                 label="Library Name"
                 name="libraryName"
                 value={settings.libraryName}
