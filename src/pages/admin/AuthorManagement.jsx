@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, TextField, Button, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
+import { Container, Typography, TextField, Button, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, CircularProgress } from '@mui/material';
 import { Alert } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
@@ -8,22 +8,26 @@ export default function AuthorManagement() {
   const [authors, setAuthors] = useState([]);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [editingAuthor, setEditingAuthor] = useState(null);
+  const [loading, setLoading] = useState(false); // New loading state
 
   useEffect(() => {
     fetchAuthors();
   }, []);
 
   const fetchAuthors = async () => {
+    setLoading(true); // Show loading
     try {
       const response = await fetch('http://localhost:8000/api/v1/authors');
-      if (response.ok) {
-        const data = await response.json();
-        setAuthors(data.data);
-      } else {
-        throw new Error('Failed to fetch authors');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
+      setAuthors(data.data);
     } catch (error) {
-      setSnackbar({ open: true, message: 'Failed to fetch authors. Please try again.', severity: 'error' });
+      console.error('Error fetching authors:', error);
+      setSnackbar({ open: true, message: `Failed to fetch authors: ${error.message}`, severity: 'error' });
+    } finally {
+      setLoading(false); // Hide loading
     }
   };
 
@@ -35,6 +39,7 @@ export default function AuthorManagement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true); // Show loading
       const url = editingAuthor 
         ? `http://localhost:8000/api/v1/authors/${editingAuthor._id}`
         : 'http://localhost:8000/api/v1/authors';
@@ -46,18 +51,20 @@ export default function AuthorManagement() {
         body: JSON.stringify(author),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        setSnackbar({ open: true, message: result.message, severity: 'success' });
-        setAuthor({ name: '', bio: '' });
-        setEditingAuthor(null);
-        fetchAuthors();
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to add/update author');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const result = await response.json();
+      setSnackbar({ open: true, message: result.message, severity: 'success' });
+      setAuthor({ name: '', bio: '' });
+      setEditingAuthor(null);
+      fetchAuthors();
     } catch (error) {
-      setSnackbar({ open: true, message: error.message, severity: 'error' });
+      console.error('Error submitting author:', error);
+      setSnackbar({ open: true, message: `Error: ${error.message}`, severity: 'error' });
+    } finally {
+      setLoading(false); // Hide loading
     }
   };
 
@@ -68,21 +75,29 @@ export default function AuthorManagement() {
 
   const handleDelete = async (authorId) => {
     try {
+      setLoading(true); // Show loading
+      console.log(`Attempting to delete author with ID: ${authorId}`); // Log the authorId for debugging
       const response = await fetch(`http://localhost:8000/api/v1/authors/${authorId}`, {
         method: 'DELETE',
       });
-
-      if (response.ok) {
-        setSnackbar({ open: true, message: 'Author deleted successfully', severity: 'success' });
-        fetchAuthors();
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to delete author');
+  
+      if (!response.ok) {
+        const errorMessage = `Failed to delete author. Status: ${response.status}`;
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
+  
+      const result = await response.json();
+      setSnackbar({ open: true, message: result.message, severity: 'success' });
+      fetchAuthors();
     } catch (error) {
-      setSnackbar({ open: true, message: error.message, severity: 'error' });
+      console.error('Error deleting author:', error);
+      setSnackbar({ open: true, message: `Error: ${error.message}`, severity: 'error' });
+    } finally {
+      setLoading(false); // Hide loading
     }
   };
+  
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -110,8 +125,8 @@ export default function AuthorManagement() {
             rows={4}
             margin="normal"
           />
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-            {editingAuthor ? 'Update Author' : 'Add Author'}
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : editingAuthor ? 'Update Author' : 'Add Author'}
           </Button>
           {editingAuthor && (
             <Button onClick={() => {
@@ -128,31 +143,39 @@ export default function AuthorManagement() {
         <Typography variant="h5" component="h2" gutterBottom>
           Existing Authors
         </Typography>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {authors.map((author) => (
-                <TableRow key={author._id}>
-                  <TableCell>{author.name}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleEdit(author)} size="small">
-                      <Edit />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(author._id)} size="small">
-                      <Delete />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          authors.length > 0 ? (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {authors.map((author) => (
+                    <TableRow key={author._id}>
+                      <TableCell>{author.name}</TableCell>
+                      <TableCell>
+                        <IconButton onClick={() => handleEdit(author)} size="small">
+                          <Edit />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(author._id)} size="small" disabled={loading}>
+                          {loading ? <CircularProgress size={24} /> : <Delete />}
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Typography>No authors found.</Typography>
+          )
+        )}
       </Paper>
 
       <Snackbar 

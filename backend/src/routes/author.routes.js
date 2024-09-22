@@ -1,6 +1,5 @@
-// author.routes.js
 import { Router } from "express";
-import { addAuthor, getAllAuthors, updateAuthor, deleteAuthor } from "../controllers/author.controller.js";
+import { addAuthor, getAllAuthors, updateAuthor, deleteAuthor, getAuthorById } from "../controllers/author.controller.js";
 
 const router = Router();
 
@@ -9,7 +8,8 @@ router.route("/")
     .get(getAllAuthors);
 
 router.route("/:id")
+    .get(getAuthorById) // Add this line
     .put(updateAuthor)
-    .delete(deleteAuthor);
+    .delete(deleteAuthor);  
 
 export default router;
