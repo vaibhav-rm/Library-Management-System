@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Button, Grid, TextField, InputAdornment, CircularProgress } from '@mui/material';
+import { Container, Typography, Button, Grid, TextField, InputAdornment, CircularProgress, Snackbar } from '@mui/material';
+import { Alert } from '@mui/material';
 import { Add, Search } from '@mui/icons-material';
 import BookForm from '../../components/BookForm';
 import BookTable from '../../components/BookTable';
@@ -11,6 +12,7 @@ export default function BookManagement() {
   const [editingBook, setEditingBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
     fetchBooks();
@@ -18,48 +20,63 @@ export default function BookManagement() {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/books');
-      setBooks(response.data);
+      const response = await axios.get('http://localhost:8000/api/v1/books');
+      setBooks(response.data.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching books:', error);
+      setSnackbar({ open: true, message: `Error fetching books: ${error.response?.data?.message || error.message}`, severity: 'error' });
       setLoading(false);
     }
   };
 
   const handleAddBook = async (newBook) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/books', newBook);
-      setBooks([...books, response.data]);
+      const response = await axios.post('http://localhost:8000/api/v1/books', newBook);
+      setBooks([...books, response.data.data]);
       setIsAddingBook(false);
+      setSnackbar({ open: true, message: 'Book added successfully', severity: 'success' });
     } catch (error) {
       console.error('Error adding book:', error);
+      if (error.response && error.response.status === 409) {
+        setSnackbar({ open: true, message: 'A book with this ISBN already exists', severity: 'error' });
+      } else {
+        setSnackbar({ open: true, message: `Error adding book: ${error.response?.data?.message || error.message}`, severity: 'error' });
+      }
     }
   };
 
   const handleEditBook = async (updatedBook) => {
     try {
-      await axios.put(`/api/books/${updatedBook._id}`, updatedBook);
-      setBooks(books.map((book) => (book._id === updatedBook._id ? updatedBook : book)));
+      const response = await axios.put(`http://localhost:8000/api/v1/books/${updatedBook._id}`, updatedBook);
+      setBooks(books.map((book) => (book._id === updatedBook._id ? response.data.data : book)));
       setEditingBook(null);
+      setSnackbar({ open: true, message: 'Book updated successfully', severity: 'success' });
     } catch (error) {
       console.error('Error updating book:', error);
+      if (error.response && error.response.status === 409) {
+        setSnackbar({ open: true, message: 'A book with this ISBN already exists', severity: 'error' });
+      } else {
+        setSnackbar({ open: true, message: `Error updating book: ${error.response?.data?.message || error.message}`, severity: 'error' });
+      }
     }
   };
 
   const handleDeleteBook = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/books/${id}`);
+      await axios.delete(`http://localhost:8000/api/v1/books/${id}`);
       setBooks(books.filter((book) => book._id !== id));
+      setSnackbar({ open: true, message: 'Book deleted successfully', severity: 'success' });
     } catch (error) {
       console.error('Error deleting book:', error);
+      setSnackbar({ open: true, message: `Error deleting book: ${error.response?.data?.message || error.message}`, severity: 'error' });
     }
   };
 
   const filteredBooks = books.filter(
     (book) =>
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.some(author => author.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
       book.isbn.includes(searchTerm)
   );
 
@@ -121,6 +138,16 @@ export default function BookManagement() {
         onEdit={setEditingBook}
         onDelete={handleDeleteBook}
       />
+
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={6000} 
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
