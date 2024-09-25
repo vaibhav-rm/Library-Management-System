@@ -122,12 +122,13 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               label="Publication Year"
               name="publicationYear"
               type="number"
+              InputProps={{ inputProps: { min: 1 } }}
               value={formData.publicationYear}
               onChange={handleChange}
               required
               variant="outlined"
             />
-          </Grid>
+          </Grid> 
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -135,6 +136,7 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               name="copies"
               type="number"
               value={formData.copies}
+              InputProps={{ inputProps: { min: 1 } }}
               onChange={handleChange}
               required
               variant="outlined"

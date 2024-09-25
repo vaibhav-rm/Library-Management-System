@@ -120,7 +120,7 @@ export default function BookManagement() {
             Add New Book
           </Button>
         </Grid>
-      </Grid>
+      </Grid> 
 
       {(isAddingBook || editingBook) && (
         <BookForm
