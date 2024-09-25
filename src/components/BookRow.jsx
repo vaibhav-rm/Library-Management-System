@@ -7,8 +7,12 @@ function BookRow({ books, branch }) {
   const navigate = useNavigate();
 
   const handleBookClick = (bookId) => {
-    navigate(`/student/books/${bookId}`);
+    navigate('../pages/student/BookDetails.jsx');
   };
+
+  if (!books || books.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mb-8">
@@ -21,9 +25,9 @@ function BookRow({ books, branch }) {
       <div className="flex overflow-x-auto space-x-4 pb-6">
         {books.slice(0, 10).map((book) => (
           <div
-            key={book.id}
+            key={book._id}
             className="min-w-[150px] flex-shrink-0 transition-transform transform hover:scale-105 cursor-pointer"
-            onClick={() => handleBookClick(book.id)}
+            onClick={() => handleBookClick(book._id)}
           >
             <img
               src={book.coverImage}

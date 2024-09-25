@@ -10,7 +10,7 @@ export default function Home() {
     <Container 
       maxWidth="xl" 
       sx={{ 
-        width: isMobile ? '100%' : '80%', // Set width to 100% on mobile and 80% on larger screens
+        width: isMobile ? '100%' : '80%',
         padding: isMobile ? theme.spacing(2) : theme.spacing(8),
       }}
     >
