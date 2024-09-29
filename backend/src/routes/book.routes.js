@@ -1,6 +1,6 @@
 // book.routes.js
 import { Router } from "express";
-import { addBook, getAllBooks, updateBook, deleteBook } from "../controllers/book.controller.js";
+import { addBook, getAllBooks, updateBook, deleteBook, getBookById } from "../controllers/book.controller.js";
 
 const router = Router();
 
@@ -10,6 +10,7 @@ router.route("/")
 
 router.route("/:id")
     .put(updateBook)
-    .delete(deleteBook);
+    .delete(deleteBook)
+    .get(getBookById);
 
 export default router;

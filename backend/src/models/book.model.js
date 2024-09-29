@@ -1,48 +1,68 @@
-import mongoose, {Schema} from "mongoose";
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+// book.model.js
+import mongoose from "mongoose";
 
-const bookSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-        lowercase: true,
-        trim: true,
-        index: true
-    },
-    author: [{
-        type: Schema.Types.ObjectId,
-        ref: "Author",
-        required: true,
-        lowercase: true,
-        trim: true,
-    }],
-    isbn: {
-        type: String,
-        required: true,
-        lowercase: true,
-        trim: true,
-    },
-    publicationYear: {
-        type: Number,
-        required: true,
-    },
-    copies: {
-        type: Number,
-        required: true,
-    },
-    borrowedCopies: {
-        type: Number,
-        required: true,
-    },
-    location: {
-        type: String,
-    },
-    branch: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Branch"
-    }
-}, {timestamps :true})
+const bookSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  isbn: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  author: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Author',
+    required: true,
+  }],
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Branch',
+    required: true,
+  },
+  copies: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  borrowedCopies: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  location: {
+    type: String,
+    trim: true,
+  },
+  // New fields from Google Books API
+  description: {
+    type: String,
+    trim: true,
+  },
+  publishedDate: {
+    type: String,
+  },
+  pageCount: {
+    type: Number,
+  },
+  categories: [{
+    type: String,
+  }],
+  averageRating: {
+    type: Number,
+    min: 0,
+    max: 5,
+  },
+  imageLinks: {
+    smallThumbnail: String,
+    thumbnail: String,
+  },
+  language: {
+    type: String,
+  },
+}, { timestamps: true });
 
-bookSchema.plugin(mongooseAggregatePaginate)
-
-export const Book = mongoose.model("Book", bookSchema)
+export const Book = mongoose.model("Book", bookSchema);

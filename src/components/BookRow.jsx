@@ -7,7 +7,7 @@ function BookRow({ books, branch }) {
   const navigate = useNavigate();
 
   const handleBookClick = (bookId) => {
-    navigate('../pages/student/BookDetails.jsx');
+    navigate(`/student/books/${bookId}`);
   };
 
   if (!books || books.length === 0) {
@@ -30,7 +30,7 @@ function BookRow({ books, branch }) {
             onClick={() => handleBookClick(book._id)}
           >
             <img
-              src={book.coverImage}
+              src={book.imageLinks?.thumbnail || '/placeholder.svg'}
               alt={book.title}
               className="w-full h-[200px] object-cover rounded-lg shadow-md"
             />

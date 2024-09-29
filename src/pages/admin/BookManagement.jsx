@@ -1,3 +1,4 @@
+// BookManagement.jsx
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button, Grid, TextField, InputAdornment, CircularProgress, Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
@@ -36,13 +37,19 @@ export default function BookManagement() {
       setBooks([...books, response.data.data]);
       setIsAddingBook(false);
       setSnackbar({ open: true, message: 'Book added successfully', severity: 'success' });
+      return response.data;
     } catch (error) {
       console.error('Error adding book:', error);
-      if (error.response && error.response.status === 409) {
-        setSnackbar({ open: true, message: 'A book with this ISBN already exists', severity: 'error' });
-      } else {
-        setSnackbar({ open: true, message: `Error adding book: ${error.response?.data?.message || error.message}`, severity: 'error' });
+      let errorMessage = 'Error adding book';
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage += ': ' + (Array.isArray(error.response.data.message) 
+          ? error.response.data.message.join(', ') 
+          : error.response.data.message);
+      } else if (error.message) {
+        errorMessage += ': ' + error.message;
       }
+      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
+      throw error;
     }
   };
 
@@ -54,11 +61,15 @@ export default function BookManagement() {
       setSnackbar({ open: true, message: 'Book updated successfully', severity: 'success' });
     } catch (error) {
       console.error('Error updating book:', error);
-      if (error.response && error.response.status === 409) {
-        setSnackbar({ open: true, message: 'A book with this ISBN already exists', severity: 'error' });
-      } else {
-        setSnackbar({ open: true, message: `Error updating book: ${error.response?.data?.message || error.message}`, severity: 'error' });
+      let errorMessage = 'Error updating book';
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage += ': ' + (Array.isArray(error.response.data.message) 
+          ? error.response.data.message.join(', ') 
+          : error.response.data.message);
+      } else if (error.message) {
+        errorMessage += ': ' + error.message;
       }
+      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
     }
   };
 
@@ -69,7 +80,15 @@ export default function BookManagement() {
       setSnackbar({ open: true, message: 'Book deleted successfully', severity: 'success' });
     } catch (error) {
       console.error('Error deleting book:', error);
-      setSnackbar({ open: true, message: `Error deleting book: ${error.response?.data?.message || error.message}`, severity: 'error' });
+      let errorMessage = 'Error deleting book';
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage += ': ' + (Array.isArray(error.response.data.message) 
+          ? error.response.data.message.join(', ') 
+          : error.response.data.message);
+      } else if (error.message) {
+        errorMessage += ': ' + error.message;
+      }
+      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
     }
   };
 
@@ -120,7 +139,7 @@ export default function BookManagement() {
             Add New Book
           </Button>
         </Grid>
-      </Grid> 
+      </Grid>
 
       {(isAddingBook || editingBook) && (
         <BookForm

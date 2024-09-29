@@ -13,8 +13,8 @@ function StudentSidebar({ isOpen, onClose }) {
   const menuItems = [
     { text: 'Home', icon: <HomeIcon />, path: '/student' },
     { text: 'Browse Books', icon: <BookIcon />, path: '/student/books' },
-    { text: 'My Profile', icon: <AccountBoxIcon />, path: '/student/profile' },
     { text: 'Borrowing History', icon: <HistoryIcon />, path: '/student/history' },
+    { text: 'My Profile', icon: <AccountBoxIcon />, path: '/student/profile' },
   ];
 
   const drawer = (

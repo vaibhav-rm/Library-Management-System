@@ -4,115 +4,139 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { Book } from "../models/book.model.js";
 import mongoose from "mongoose";
+import axios from 'axios';
+
+const fetchGoogleBooksData = async (isbn) => {
+    try {
+      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+      const bookData = response.data.items?.[0]?.volumeInfo;
+      if (!bookData) {
+        return null;
+      }
+      return {
+        description: bookData.description,
+        publishedDate: bookData.publishedDate,
+        pageCount: bookData.pageCount,
+        categories: bookData.categories,
+        averageRating: bookData.averageRating,
+        imageLinks: bookData.imageLinks,
+        language: bookData.language,
+      };
+    } catch (error) {
+      console.error("Error fetching Google Books data:", error);
+      return null;
+    }
+  };
 
 const addBook = asyncHandler(async (req, res) => {
-    const { title, isbn, publicationYear, copies, location, author, branch } = req.body;
+  const { title, isbn, author, branch, copies, location } = req.body;
 
-    if (!title || !isbn || !publicationYear || !copies || !author || !branch) {
-        throw new ApiError(400, "All required fields must be provided");
-    }
+  if (!title || !isbn || !author || !branch || !copies) {
+    throw new ApiError(400, "All required fields must be provided");
+  }
 
-    if (!Array.isArray(author) || author.length === 0) {
-        throw new ApiError(400, "At least one author must be provided");
-    }
+  if (!Array.isArray(author)) {
+    throw new ApiError(400, "Author must be an array of IDs");
+  }
 
-    if (!mongoose.Types.ObjectId.isValid(branch)) {
-        throw new ApiError(400, "Invalid branch ID");
-    }
+  const existingBook = await Book.findOne({ isbn });
+  if (existingBook) {
+    throw new ApiError(409, "A book with this ISBN already exists");
+  }
 
-    const existingBook = await Book.findOne({ isbn });
-    if (existingBook) {
-        throw new ApiError(409, "A book with this ISBN already exists");
-    }
+  const googleBooksData = await fetchGoogleBooksData(isbn);
 
-    const book = await Book.create({
-        title,
-        isbn,
-        publicationYear,
-        copies,
-        borrowedCopies: 0,
-        location,
-        author,
-        branch
-    });
+  const bookData = {
+    title,
+    isbn,
+    author,
+    branch,
+    copies,
+    location,
+    ...googleBooksData,
+  };
 
-    const populatedBook = await Book.findById(book._id)
-        .populate('author', 'name')
-        .populate('branch', 'name')
-        .lean();
+  const book = await Book.create(bookData);
 
-    return res.status(201).json(
-        new ApiResponse(201, populatedBook, "Book added successfully")
-    );
-});
+  const populatedBook = await Book.findById(book._id)
+    .populate('author', 'name')
+    .populate('branch', 'name');
 
-const getAllBooks = asyncHandler(async (req, res) => {
-    const books = await Book.find({})
-        .populate('author', 'name')
-        .populate('branch', 'name')
-        .lean();
-
-    return res.status(200).json(
-        new ApiResponse(200, books, "Books fetched successfully")
-    );
+  return res.status(201).json(
+    new ApiResponse(201, populatedBook, "Book added successfully")
+  );
 });
 
 const updateBook = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { title, isbn, publicationYear, copies, location, author, branch } = req.body;
+  const { id } = req.params;
+  const updateData = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ApiError(400, "Invalid book ID");
-    }
+  // Validate update data
+  const allowedUpdates = ['title', 'author', 'branch', 'copies', 'location', 'description', 'publishedDate', 'pageCount', 'categories', 'averageRating', 'imageLinks', 'language'];
+  const updates = Object.keys(updateData);
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
-    if (!title || !isbn || !publicationYear || !copies || !author || !branch) {
-        throw new ApiError(400, "All required fields must be provided");
-    }
+  if (!isValidOperation) {
+    throw new ApiError(400, "Invalid updates!");
+  }
 
-    if (!Array.isArray(author) || author.length === 0) {
-        throw new ApiError(400, "At least one author must be provided");
-    }
+  const book = await Book.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+    .populate('author', 'name')
+    .populate('branch', 'name');
 
-    if (!mongoose.Types.ObjectId.isValid(branch)) {
-        throw new ApiError(400, "Invalid branch ID");
-    }
+  if (!book) {
+    throw new ApiError(404, "Book not found");
+  }
 
-    const existingBook = await Book.findOne({ isbn, _id: { $ne: id } });
-    if (existingBook) {
-        throw new ApiError(409, "A book with this ISBN already exists");
-    }
-
-    const updatedBook = await Book.findByIdAndUpdate(
-        id,
-        { title, isbn, publicationYear, copies, location, author, branch },
-        { new: true, runValidators: true }
-    ).populate('author', 'name').populate('branch', 'name');
-
-    if (!updatedBook) {
-        throw new ApiError(404, "Book not found");
-    }
-
-    return res.status(200).json(
-        new ApiResponse(200, updatedBook, "Book updated successfully")
-    );
+  return res.status(200).json(
+    new ApiResponse(200, book, "Book updated successfully")
+  );
 });
 
 const deleteBook = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ApiError(400, "Invalid book ID");
-    }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid book ID");
+  }
 
-    const deletedBook = await Book.findByIdAndDelete(id);
+  const deletedBook = await Book.findByIdAndDelete(id);
 
-    if (!deletedBook) {
-        throw new ApiError(404, "Book not found");
-    }
+  if (!deletedBook) {
+    throw new ApiError(404, "Book not found");
+  }
 
-    return res.status(200).json(
-        new ApiResponse(200, {}, "Book deleted successfully")
-    );
+  return res.status(200).json(
+    new ApiResponse(200, {}, "Book deleted successfully")
+  );
 });
 
-export { addBook, getAllBooks, updateBook, deleteBook };
+const getBookById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid book ID");
+  }
+
+  const book = await Book.findById(id);
+
+  if (!book) {
+    throw new ApiError(404, "Book not found");
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, book, "Book fetched successfully")
+  );
+});
+
+const getAllBooks = asyncHandler(async (req, res) => {
+  const books = await Book.find()
+    .populate('author', 'name')
+    .populate('branch', 'name');
+
+  return res.status(200).json(
+    new ApiResponse(200, books, "Books fetched successfully")
+  );
+});
+
+export { addBook, getAllBooks, getBookById, updateBook, deleteBook };

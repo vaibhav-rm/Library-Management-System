@@ -1,3 +1,4 @@
+// BookForm.jsx
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Grid, MenuItem, Paper, Typography, Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
@@ -8,15 +9,15 @@ export default function BookForm({ book, onSubmit, onCancel }) {
     title: '',
     author: [],
     isbn: '',
-    publicationYear: '',
     copies: '',
-    borrowedCopies: 0,
     location: '',
     branch: '',
   });
   const [authors, setAuthors] = useState([]);
   const [branches, setBranches] = useState([]);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     fetchAuthors();
@@ -46,24 +47,47 @@ export default function BookForm({ book, onSubmit, onCancel }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit({ ...formData, borrowedCopies: 0 });
+      try {
+        const response = await onSubmit(formData);
+        if (response.googleBooksData === null && !book) {
+          setShowAdditionalFields(true);
+          setSnackbar({ open: true, message: 'No Google Books data found. Please fill in additional information.', severity: 'warning' });
+        } else {
+          setSnackbar({ open: true, message: book ? 'Book updated successfully' : 'Book added successfully', severity: 'success' });
+          onCancel();
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+          if (Array.isArray(error.response.data.message)) {
+            const errorMessages = error.response.data.message.join(', ');
+            setSnackbar({ open: true, message: `Validation errors: ${errorMessages}`, severity: 'error' });
+          } else {
+            setSnackbar({ open: true, message: `Error: ${error.response.data.message}`, severity: 'error' });
+          }
+        } else {
+          setSnackbar({ open: true, message: `Error: ${error.message}`, severity: 'error' });
+        }
+      }
     }
   };
 
   const validateForm = () => {
-    const requiredFields = ['title', 'author', 'isbn', 'publicationYear', 'copies', 'branch'];
+    const newErrors = {};
+    const requiredFields = ['title', 'author', 'isbn', 'copies', 'branch'];
     for (const field of requiredFields) {
       if (!formData[field] || (Array.isArray(formData[field]) && formData[field].length === 0)) {
-        setSnackbar({ open: true, message: `${field.charAt(0).toUpperCase() + field.slice(1)} is required`, severity: 'error' });
-        return false;
+        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
       }
     }
-    return true;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
@@ -82,6 +106,8 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               onChange={handleChange}
               required
               variant="outlined"
+              error={!!errors.title}
+              helperText={errors.title}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -97,6 +123,8 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               SelectProps={{
                 multiple: true,
               }}
+              error={!!errors.author}
+              helperText={errors.author}
             >
               {authors.map((author) => (
                 <MenuItem key={author._id} value={author._id}>
@@ -114,21 +142,10 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               onChange={handleChange}
               required
               variant="outlined"
+              error={!!errors.isbn}
+              helperText={errors.isbn}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Publication Year"
-              name="publicationYear"
-              type="number"
-              InputProps={{ inputProps: { min: 1 } }}
-              value={formData.publicationYear}
-              onChange={handleChange}
-              required
-              variant="outlined"
-            />
-          </Grid> 
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -136,10 +153,11 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               name="copies"
               type="number"
               value={formData.copies}
-              InputProps={{ inputProps: { min: 1 } }}
               onChange={handleChange}
               required
               variant="outlined"
+              error={!!errors.copies}
+              helperText={errors.copies}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -162,6 +180,8 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               onChange={handleChange}
               required
               variant="outlined"
+              error={!!errors.branch}
+              helperText={errors.branch}
             >
               {branches.map((branch) => (
                 <MenuItem key={branch._id} value={branch._id}>
@@ -170,6 +190,63 @@ export default function BookForm({ book, onSubmit, onCancel }) {
               ))}
             </TextField>
           </Grid>
+          {(showAdditionalFields || book) && (
+            <>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Description"
+                  name="description"
+                  value={formData.description || ''}
+                  onChange={handleChange}
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Published Date"
+                  name="publishedDate"
+                  value={formData.publishedDate || ''}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Page Count"
+                  name="pageCount"
+                  type="number"
+                  value={formData.pageCount || ''}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Categories (comma-separated)"
+                  name="categories"
+                  value={formData.categories ? formData.categories.join(', ') : ''}
+                  onChange={(e) => setFormData({ ...formData, categories: e.target.value.split(',').map(cat => cat.trim()) })}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Language"
+                  name="language"
+                  value={formData.language || ''}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Grid>
+            </>
+          )}
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" sx={{ mr: 1 }}>
               {book ? 'Update Book' : 'Add Book'}

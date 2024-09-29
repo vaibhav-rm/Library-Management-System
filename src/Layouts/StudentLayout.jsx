@@ -21,8 +21,8 @@ function StudentLayout() {
           <Route index element={<Home />} />
           <Route path="books" element={<Books />} />
           <Route path="/books/:id" element={<BookDetails />} />
-          <Route path="profile" element={<Profile />} />
           <Route path="history" element={<BorrowingHistory />} />
+          <Route path="profile" element={<Profile />} />
         </Routes>
         <Outlet />
       </Box>
