@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Typography, Button, Grid, Paper, Chip, CircularProgress } from '@mui/material';
+import { 
+  Container, 
+  Typography, 
+  Button, 
+  Grid, 
+  Paper, 
+  Chip, 
+  CircularProgress, 
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+  Alert
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 
@@ -10,6 +25,9 @@ export default function BookDetails() {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
+  const [borrowing, setBorrowing] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
     fetchBookDetails();
@@ -34,6 +52,23 @@ export default function BookDetails() {
         setError('Failed to fetch book details. Please try again later.');
       }
       setLoading(false);
+    }
+  };
+
+  const handleBorrowBook = async () => {
+    setBorrowing(true);
+    try {
+      // Replace this with your actual API endpoint for borrowing a book
+      await axios.post(`http://localhost:8000/api/v1/books/${id}/borrow`);
+      setSnackbar({ open: true, message: 'Book borrowed successfully!', severity: 'success' });
+      setOpenBorrowDialog(false);
+      // Refresh book details to update available copies
+      fetchBookDetails();
+    } catch (error) {
+      console.error('Error borrowing book:', error);
+      setSnackbar({ open: true, message: 'Failed to borrow book. Please try again.', severity: 'error' });
+    } finally {
+      setBorrowing(false);
     }
   };
 
@@ -72,7 +107,7 @@ export default function BookDetails() {
       <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} className="mb-4">
         Back to Books
       </Button>
-      <Paper elevation={3} className="p-8">
+      <Paper elevation={3} className="p-4 sm:p-8">
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <img
@@ -82,22 +117,62 @@ export default function BookDetails() {
             />
           </Grid>
           <Grid item xs={12} md={8}>
-            <Typography variant="h4" className="mb-4 font-bold text-primary">{book.title}</Typography>
-            <Typography variant="h6" className="mb-2 text-gray-600">by {book.author.map(a => a.name).join(', ')}</Typography>
+            <Typography variant="h4" className="mb-4 font-bold text-primary break-words">
+              {book.title}
+            </Typography>
+            <Typography variant="h6" className="mb-2 text-gray-600">
+              by {book.author.map(a => a.name).join(', ')}  
+            </Typography>
             <Chip label={book.branch.name} className="mb-4" />
             <Typography variant="body1" className="mb-4">{book.description || 'No description available.'}</Typography>
             <Typography variant="body2" className="mb-2">ISBN: {book.isbn || 'N/A'}</Typography>
-            <Typography variant="body2" className="mb-2">Published Date: {book.publishedDate || 'N/A'}</Typography>
+            <Typography variant="body2" className="mb-2">Published Year: {book.publicationYear || 'N/A'}</Typography>
             <Typography variant="body2" className="mb-2">Available Copies: {book.copies - book.borrowedCopies}</Typography>
             {book.averageRating && (
               <Typography variant="body2" className="mb-2">Rating: {book.averageRating}/5</Typography>
             )}
-            <Button variant="contained" color="primary" className="mt-4">
-              Borrow Book
+            <Button 
+              variant="contained" 
+              color="primary" 
+              className="mt-4"
+              onClick={() => setOpenBorrowDialog(true)}
+              disabled={book.copies - book.borrowedCopies === 0}
+            >
+              {book.copies - book.borrowedCopies === 0 ? 'Not Available' : 'Borrow Book'}
             </Button>
           </Grid>
         </Grid>
       </Paper>
+
+      <Dialog
+        open={openBorrowDialog}
+        onClose={() => setOpenBorrowDialog(false)}
+      >
+        <DialogTitle>Borrow Book</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to borrow "{book.title}"?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenBorrowDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleBorrowBook} color="primary" disabled={borrowing}>
+            {borrowing ? 'Borrowing...' : 'Confirm'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={6000} 
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

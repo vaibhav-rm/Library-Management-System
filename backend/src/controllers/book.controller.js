@@ -68,30 +68,36 @@ const addBook = asyncHandler(async (req, res) => {
 });
 
 const updateBook = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const updateData = req.body;
-
-  // Validate update data
-  const allowedUpdates = ['title', 'author', 'branch', 'copies', 'location', 'description', 'publishedDate', 'pageCount', 'categories', 'averageRating', 'imageLinks', 'language'];
-  const updates = Object.keys(updateData);
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-  if (!isValidOperation) {
-    throw new ApiError(400, "Invalid updates!");
-  }
-
-  const book = await Book.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
-    .populate('author', 'name')
-    .populate('branch', 'name');
-
-  if (!book) {
-    throw new ApiError(404, "Book not found");
-  }
-
-  return res.status(200).json(
-    new ApiResponse(200, book, "Book updated successfully")
-  );
-});
+    const { id } = req.params;
+    let updateData = req.body;
+  
+    // Validate update data
+    const allowedUpdates = ['title', 'author', 'branch', 'copies', 'location', 'description', 'publishedDate', 'pageCount', 'categories', 'averageRating', 'imageLinks', 'language'];
+    const updates = Object.keys(updateData);
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  
+    if (!isValidOperation) {
+      throw new ApiError(400, "Invalid updates!");
+    }
+  
+    // Ensure author is an array of ObjectId
+    if (updateData.author && Array.isArray(updateData.author)) {
+      updateData.author = updateData.author.map(author => typeof author === 'object' ? author._id : author);
+    }
+  
+    const book = await Book.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+      .populate('author', 'name')
+      .populate('branch', 'name');
+  
+    if (!book) {
+      throw new ApiError(404, "Book not found");
+    }
+  
+    return res.status(200).json(
+      new ApiResponse(200, book, "Book updated successfully")
+    );
+  });
+  
 
 const deleteBook = asyncHandler(async (req, res) => {
   const { id } = req.params;

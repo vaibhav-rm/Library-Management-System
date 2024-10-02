@@ -1,4 +1,3 @@
-// BookManagement.jsx
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button, Grid, TextField, InputAdornment, CircularProgress, Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
@@ -33,6 +32,7 @@ export default function BookManagement() {
 
   const handleAddBook = async (newBook) => {
     try {
+      console.log('Adding book:', newBook);
       const response = await axios.post('http://localhost:8000/api/v1/books', newBook);
       setBooks([...books, response.data.data]);
       setIsAddingBook(false);
@@ -40,36 +40,23 @@ export default function BookManagement() {
       return response.data;
     } catch (error) {
       console.error('Error adding book:', error);
-      let errorMessage = 'Error adding book';
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage += ': ' + (Array.isArray(error.response.data.message) 
-          ? error.response.data.message.join(', ') 
-          : error.response.data.message);
-      } else if (error.message) {
-        errorMessage += ': ' + error.message;
-      }
-      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
+      setSnackbar({ open: true, message: `Error adding book: ${error.response?.data?.message || error.message}`, severity: 'error' });
       throw error;
     }
   };
 
   const handleEditBook = async (updatedBook) => {
     try {
+      console.log('Updating book:', updatedBook);
       const response = await axios.put(`http://localhost:8000/api/v1/books/${updatedBook._id}`, updatedBook);
       setBooks(books.map((book) => (book._id === updatedBook._id ? response.data.data : book)));
       setEditingBook(null);
       setSnackbar({ open: true, message: 'Book updated successfully', severity: 'success' });
+      return response.data;
     } catch (error) {
       console.error('Error updating book:', error);
-      let errorMessage = 'Error updating book';
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage += ': ' + (Array.isArray(error.response.data.message) 
-          ? error.response.data.message.join(', ') 
-          : error.response.data.message);
-      } else if (error.message) {
-        errorMessage += ': ' + error.message;
-      }
-      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
+      setSnackbar({ open: true, message: `Error updating book: ${error.response?.data?.message || error.message}`, severity: 'error' });
+      throw error;
     }
   };
 
@@ -80,15 +67,7 @@ export default function BookManagement() {
       setSnackbar({ open: true, message: 'Book deleted successfully', severity: 'success' });
     } catch (error) {
       console.error('Error deleting book:', error);
-      let errorMessage = 'Error deleting book';
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage += ': ' + (Array.isArray(error.response.data.message) 
-          ? error.response.data.message.join(', ') 
-          : error.response.data.message);
-      } else if (error.message) {
-        errorMessage += ': ' + error.message;
-      }
-      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
+      setSnackbar({ open: true, message: `Error deleting book: ${error.response?.data?.message || error.message}`, severity: 'error' });
     }
   };
 
