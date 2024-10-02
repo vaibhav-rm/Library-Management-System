@@ -23,6 +23,7 @@ export default function BookDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
+  const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
@@ -43,9 +44,18 @@ export default function BookDetails() {
       }
 
       setBook(bookData);
+
+      // Fetch author names based on author IDs
+      const authorIds = bookData.author;
+      const authorPromises = authorIds.map(authorId => axios.get(`http://localhost:8000/api/v1/authors/${authorId}`));
+      
+      const authorResponses = await Promise.all(authorPromises);
+      const authorNames = authorResponses.map(res => res.data.data.name);
+      setAuthors(authorNames);
+
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching book details:', error);
+      console.error('Error fetching book or author details:', error);
       if (error.response && error.response.status === 404) {
         setError('Book not found. It may have been removed from the library.');
       } else {
@@ -58,11 +68,9 @@ export default function BookDetails() {
   const handleBorrowBook = async () => {
     setBorrowing(true);
     try {
-      // Replace this with your actual API endpoint for borrowing a book
       await axios.post(`http://localhost:8000/api/v1/books/${id}/borrow`);
       setSnackbar({ open: true, message: 'Book borrowed successfully!', severity: 'success' });
       setOpenBorrowDialog(false);
-      // Refresh book details to update available copies
       fetchBookDetails();
     } catch (error) {
       console.error('Error borrowing book:', error);
@@ -121,7 +129,7 @@ export default function BookDetails() {
               {book.title}
             </Typography>
             <Typography variant="h6" className="mb-2 text-gray-600">
-              by {book.author.map(a => a.name).join(', ')}  
+              by {authors.join(', ')}
             </Typography>
             <Chip label={book.branch.name} className="mb-4" />
             <Typography variant="body1" className="mb-4">{book.description || 'No description available.'}</Typography>

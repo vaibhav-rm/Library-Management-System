@@ -9,6 +9,7 @@ export default function Login() {
     facultyKgid: '',
     password: '',
   });
+  const [error, setError] = useState(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -22,10 +23,34 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically handle the login logic
-    console.log('Login submitted:', formData);
+    try {
+      const loginData = tabValue === 0 
+        ? { username: formData.studentId, password: formData.password }
+        : { email: formData.facultyKgid, password: formData.password };
+
+      const response = await fetch('http:/localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+        credentials: 'include', // Include cookies for authentication
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
+
+      const data = await response.json();
+      console.log('Login successful:', data);
+      // Optionally, redirect or update the state with user data here
+    } catch (err) {
+      setError(err.message);
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -34,6 +59,11 @@ export default function Login() {
         <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
           Login to Library Management System
         </Typography>
+        {error && (
+          <Typography variant="body2" color="error">
+            {error}
+          </Typography>
+        )}
         <Tabs value={tabValue} onChange={handleTabChange} aria-label="user type tabs" sx={{ mb: 3 }}>
           <Tab icon={<School />} label="Student" />
           <Tab icon={<Work />} label="Faculty" />
@@ -61,7 +91,6 @@ export default function Login() {
               label="Faculty KGID"
               name="facultyKgid"
               autoComplete="facultyKgid"
-              autoFocus
               value={formData.facultyKgid}
               onChange={handleInputChange}
             />
