@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button, Box, Tab, Tabs } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Paper, Typography, TextField, Button, Box, Tab, Tabs } from '@mui/material';
 import { School, Work } from '@mui/icons-material';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function Login() {
+const Login = () => {
   const [tabValue, setTabValue] = useState(0);
   const [formData, setFormData] = useState({
-    studentId: '',
-    facultyKgid: '',
+    username: '',
     password: '',
   });
   const [error, setError] = useState(null);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -26,75 +29,58 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const loginData = tabValue === 0 
-        ? { username: formData.studentId, password: formData.password }
-        : { email: formData.facultyKgid, password: formData.password };
-
-      const response = await fetch('http:/localhost:8000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
-        credentials: 'include', // Include cookies for authentication
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
-      }
-
-      const data = await response.json();
-      console.log('Login successful:', data);
-      // Optionally, redirect or update the state with user data here
+      const user = await login(formData);
+      navigate(user.role === 'admin' ? '/admin' : '/student');
     } catch (err) {
-      setError(err.message);
-      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{ mt: 8, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 'calc(100vh - 64px)' }}>
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          p: 4, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center',
+          backgroundColor: 'background.paper',
+          maxWidth: 400,
+          width: '100%',
+        }}
+      >
+        <Typography component="h1" variant="h5" sx={{ mb: 3, color: 'primary.main' }}>
           Login to Library Management System
         </Typography>
         {error && (
-          <Typography variant="body2" color="error">
+          <Typography variant="body2" color="error" sx={{ mb: 2 }}>
             {error}
           </Typography>
         )}
-        <Tabs value={tabValue} onChange={handleTabChange} aria-label="user type tabs" sx={{ mb: 3 }}>
+        <Tabs 
+          value={tabValue} 
+          onChange={handleTabChange} 
+          aria-label="user type tabs" 
+          sx={{ mb: 3, '& .MuiTab-root': { color: 'text.secondary' } }}
+        >
           <Tab icon={<School />} label="Student" />
-          <Tab icon={<Work />} label="Faculty" />
+          <Tab icon={<Work />} label="Admin" />
         </Tabs>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          {tabValue === 0 ? (
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="studentId"
-              label="Student ID"
-              name="studentId"
-              autoComplete="studentId"
-              autoFocus
-              value={formData.studentId}
-              onChange={handleInputChange}
-            />
-          ) : (
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="facultyKgid"
-              label="Faculty KGID"
-              name="facultyKgid"
-              autoComplete="facultyKgid"
-              value={formData.facultyKgid}
-              onChange={handleInputChange}
-            />
-          )}
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            value={formData.username}
+            onChange={handleInputChange}
+            sx={{ mb: 2 }}
+          />
           <TextField
             margin="normal"
             required
@@ -106,25 +92,28 @@ export default function Login() {
             autoComplete="current-password"
             value={formData.password}
             onChange={handleInputChange}
+            sx={{ mb: 2 }}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, py: 1.5, fontSize: '1rem' }}
           >
             Sign In
           </Button>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2">
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Don't have an account?{' '}
-              <Button color="primary" href="/register">
+              <Button color="primary" href="/register" sx={{ textTransform: 'none' }}>
                 Register here
               </Button>
             </Typography>
           </Box>
         </Box>
       </Paper>
-    </Container>
+    </Box>
   );
-}
+};
+
+export default Login;

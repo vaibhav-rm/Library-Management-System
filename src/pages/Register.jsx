@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button, Box, Tab, Tabs, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Paper, Typography, TextField, Button, Box, Tab, Tabs } from '@mui/material';
 import { School, Work } from '@mui/icons-material';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function Register() {
+const Register = () => {
   const [tabValue, setTabValue] = useState(0);
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
-    studentId: '',
-    facultyKgid: '',
-    department: '',
+    fullName: '',
     password: '',
-    confirmPassword: '',
+    role: 'student',
   });
+  const [error, setError] = useState(null);
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+    setFormData(prevData => ({
+      ...prevData,
+      role: newValue === 0 ? 'student' : 'admin'
+    }));
   };
 
   const handleInputChange = (e) => {
@@ -26,128 +33,118 @@ export default function Register() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically handle the registration logic
-    console.log('Registration submitted:', formData);
+    try {
+      const user = await register(formData);
+      navigate(user.role === 'admin' ? '/admin' : '/student');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    }
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Paper elevation={3} sx={{ mt: 8, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 'calc(100vh - 64px)' }}>
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          p: 4, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center',
+          backgroundColor: 'background.paper',
+          maxWidth: 400,
+          width: '100%',
+        }}
+      >
+        <Typography component="h1" variant="h5" sx={{ mb: 3, color: 'primary.main' }}>
           Register for Library Management System
         </Typography>
-        <Tabs value={tabValue} onChange={handleTabChange} aria-label="user type tabs" sx={{ mb: 3 }}>
+        {error && (
+          <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        )}
+        <Tabs 
+          value={tabValue} 
+          onChange={handleTabChange} 
+          aria-label="user type tabs" 
+          sx={{ mb: 3, '& .MuiTab-root': { color: 'text.secondary' } }}
+        >
           <Tab icon={<School />} label="Student" />
-          <Tab icon={<Work />} label="Faculty" />
+          <Tab icon={<Work />} label="Admin" />
         </Tabs>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="name"
-                label="Full Name"
-                name="name"
-                autoComplete="name"
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            {tabValue === 0 ? (
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="studentId"
-                  label="Student ID"
-                  name="studentId"
-                  value={formData.studentId}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="facultyKgid"
-                  label="Faculty KGID"
-                  name="facultyKgid"
-                  value={formData.facultyKgid}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-            )}
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="department"
-                label="Department"
-                name="department"
-                value={formData.department}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-              />
-            </Grid>
-          </Grid>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            value={formData.username}
+            onChange={handleInputChange}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="fullName"
+            label="Full Name"
+            name="fullName"
+            autoComplete="name"
+            value={formData.fullName}
+            onChange={handleInputChange}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="new-password"
+            value={formData.password}
+            onChange={handleInputChange}
+            sx={{ mb: 2 }}
+          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, py: 1.5, fontSize: '1rem' }}
           >
             Register
           </Button>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2">
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Already have an account?{' '}
-              <Button color="primary" href="/login">
+              <Button color="primary" href="/login" sx={{ textTransform: 'none' }}>
                 Sign in here
               </Button>
             </Typography>
           </Box>
         </Box>
       </Paper>
-    </Container>
+    </Box>
   );
-}
+};
+
+export default Register;

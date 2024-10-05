@@ -86,57 +86,66 @@
 
     } )
 
-    const loginUser = asyncHandler( async (req, res) => {
-        // req body -> data
-        // username or email 
-        // find the user
-        // password check 
-        // access and refresh token 
-        // send cookie
-
-        const {email, username, password} = req.body
-
+    const loginUser = asyncHandler(async (req, res) => {
+        const { email, username, password } = req.body;
+    
+        // Validate that username or email is provided
         if (!username && !email) {  
-            throw new ApiError(400, "username or email is required")
+            throw new ApiError(400, "Username or email is required");
         }
-
+    
+        // Find the user by username or email
         const user = await User.findOne({
-            $or: [{username}, {email}]
-        })
-
+            $or: [{ username }, { email }]
+        });
+    
+        // Check if user exists
         if (!user) {
-            throw new ApiError(404, "User does not exist")
+            throw new ApiError(404, "User does not exist");
         }
-
-        const isPasswordValid = await user.isPasswordCorrect(password)
-
+    
+        // Check if the provided password is correct
+        const isPasswordValid = await user.isPasswordCorrect(password);
+    
         if (!isPasswordValid) {
-            throw new ApiError(401, "Password is incorrect")
+            throw new ApiError(401, "Password is incorrect");
         }
-
-        const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id)
-
-        const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
-
-        const options = {
+    
+        // Generate access and refresh tokens
+        const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
+    
+        // Retrieve logged-in user data (excluding password and refreshToken)
+        const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+    
+        // Cookie options
+        const isProduction = process.env.NODE_ENV === 'production';
+        const cookieOptions = {
             httpOnly: true,
-            secure: true
-        }
-
+            secure: isProduction, // Only secure in production
+            sameSite: isProduction ? 'None' : 'Lax', // 'None' for cross-origin in production, 'Lax' for dev
+            maxAge: 15 * 60 * 1000 // 15 minutes for accessToken
+        };
+    
+        const refreshTokenOptions = {
+            ...cookieOptions,
+            maxAge: 24 * 60 * 60 * 1000 // 1 day for refreshToken
+        };
+    
+        // Send cookies and response
         return res
-        .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
-        .json(
-            new ApiResponse(
-                200, {
-                    user: loggedInUser, accessToken, refreshToken
-                },
-                "User logged in sucessfully"
-            )
-        )
-
-    })
+            .status(200)
+            .cookie("accessToken", accessToken, cookieOptions) // Send accessToken as cookie
+            .cookie("refreshToken", refreshToken, refreshTokenOptions) // Send refreshToken as cookie
+            .json(
+                new ApiResponse(
+                    200, 
+                    { user: loggedInUser }, // Include logged-in user data in response
+                    "User logged in successfully"
+                )
+            );
+    });
+    
+    
 
     const logoutUser = asyncHandler( async (req, res) => {
         await User.findByIdAndUpdate(
