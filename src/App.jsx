@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import StudentLayout from './Layouts/StudentLayout';
 import AdminLayout from './Layouts/AdminLayout';
 import theme from './theme';
+import { CircularProgress, Box } from '@mui/material';
 
 const App = () => {
   return (
@@ -17,8 +18,8 @@ const App = () => {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/login" element={<RedirectToLogin />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<RedirectIfAuthenticated element={<Login />} />} />
+            <Route path="/register" element={<RedirectIfAuthenticated element={<Register />} />} />
             <Route path="/student/*" element={
               <ProtectedRoute allowedRoles={['student']}>
                 <StudentLayout />
@@ -37,20 +38,22 @@ const App = () => {
   );
 };
 
-// This component checks the user state and redirects appropriately
-const RedirectToLogin = () => {
+const RedirectIfAuthenticated = ({ element }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>; // Optionally show a loading state
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (user) {
-    return <Navigate to="/student" replace />; // Adjust this based on your app structure
+    return <Navigate to={user.role === 'admin' ? '/admin' : '/student'} replace />;
   }
 
-  return <Login />;
+  return element;
 };
 
 export default App;
-    
