@@ -21,6 +21,7 @@ import bookRouter from "./routes/book.routes.js";
 import authorRouter from "./routes/author.routes.js";
 import branchRouter from "./routes/branch.routes.js";
 import transactionRouter from "./routes/transaction.routes.js";
+import dashboardRouter from "./routes/dashboard.routes.js"
 
 // routes declaration
 app.use("/api/v1/users", userRouter);
@@ -28,5 +29,6 @@ app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/authors", authorRouter);
 app.use("/api/v1/branches", branchRouter);
 app.use("/api/v1/transactions", transactionRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
 
 export { app } 
