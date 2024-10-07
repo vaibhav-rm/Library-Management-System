@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -14,28 +14,49 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  CircularProgress,
+  Snackbar,
+  Alert
 } from '@mui/material';
-
-// Mock data for borrowing requests and active borrowings
-const initialRequests = [
-  { id: 1, studentName: 'John Doe', bookTitle: 'To Kill a Mockingbird', requestDate: '2023-06-10', status: 'Pending' },
-  { id: 2, studentName: 'Jane Smith', bookTitle: '1984', requestDate: '2023-06-11', status: 'Pending' },
-  // Add more requests as needed
-];
-
-const initialBorrowings = [
-  { id: 1, studentName: 'Alice Johnson', bookTitle: 'Pride and Prejudice', borrowDate: '2023-06-01', dueDate: '2023-06-15', status: 'Borrowed' },
-  { id: 2, studentName: 'Bob Williams', bookTitle: 'The Great Gatsby', borrowDate: '2023-06-05', dueDate: '2023-06-19', status: 'Borrowed' },
-  // Add more borrowings as needed
-];
+import axios from 'axios';
 
 export default function BorrowingManagement() {
-  const [requests, setRequests] = useState(initialRequests);
-  const [borrowings, setBorrowings] = useState(initialBorrowings);
+  const [requests, setRequests] = useState([]);
+  const [activeBorrowings, setActiveBorrowings] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [action, setAction] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  useEffect(() => {
+    fetchPendingRequests();
+    fetchActiveBorrowings();
+  }, []);
+
+  const fetchPendingRequests = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/transactions/pending', { withCredentials: true });
+      setRequests(response.data.data);
+    } catch (error) {
+      console.error('Error fetching pending requests:', error);
+      setError('Failed to fetch pending requests');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchActiveBorrowings = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/transactions/active', { withCredentials: true });
+      setActiveBorrowings(response.data.data);
+    } catch (error) {
+      console.error('Error fetching active borrowings:', error);
+      setError('Failed to fetch active borrowings');
+    }
+  };
 
   const handleAction = (item, actionType) => {
     setSelectedItem(item);
@@ -43,26 +64,48 @@ export default function BorrowingManagement() {
     setOpenDialog(true);
   };
 
-  const handleConfirmAction = () => {
-    if (action === 'approve' || action === 'reject') {
-      setRequests(requests.map(req => 
-        req.id === selectedItem.id 
-          ? { ...req, status: action === 'approve' ? 'Approved' : 'Rejected' } 
-          : req
-      ));
-    } else if (action === 'return') {
-      setBorrowings(borrowings.map(borrow => 
-        borrow.id === selectedItem.id 
-          ? { ...borrow, status: 'Returned' } 
-          : borrow
-      ));
+  const handleConfirmAction = async () => {
+    try {
+      if (action === 'approve' || action === 'reject') {
+        await axios.patch(`http://localhost:8000/api/v1/transactions/${selectedItem._id}`, 
+          { status: action === 'approve' ? 'approved' : 'rejected' },
+          { withCredentials: true }
+        );
+        setRequests(requests.filter(req => req._id !== selectedItem._id));
+        if (action === 'approve') {
+          setActiveBorrowings([...activeBorrowings, { ...selectedItem, status: 'approved' }]);
+        }
+        setSnackbar({ open: true, message: `Request ${action}d successfully`, severity: 'success' });
+      } else if (action === 'return') {
+        await axios.patch(`http://localhost:8000/api/v1/transactions/${selectedItem._id}/return`, 
+          {}, 
+          { withCredentials: true }
+        );
+        setActiveBorrowings(activeBorrowings.filter(borrow => borrow._id !== selectedItem._id));
+        setSnackbar({ open: true, message: 'Book returned successfully', severity: 'success' });
+      } else if (action === 'issue') {
+        await axios.patch(`http://localhost:8000/api/v1/transactions/${selectedItem._id}/issue`, 
+          {}, 
+          { withCredentials: true }
+        );
+        setActiveBorrowings(activeBorrowings.map(borrow => 
+          borrow._id === selectedItem._id ? { ...borrow, status: 'borrowed' } : borrow
+        ));
+        setSnackbar({ open: true, message: 'Book issued successfully', severity: 'success' });
+      }
+    } catch (error) {
+      console.error('Error updating transaction:', error);
+      setSnackbar({ open: true, message: `Failed to ${action} request: ${error.response?.data?.message || error.message}`, severity: 'error' });
+    } finally {
+      setOpenDialog(false);
     }
-    setOpenDialog(false);
   };
+
+  // ... (rest of the component code remains the same)
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+       <Typography variant="h4" gutterBottom>
         Borrowing Management
       </Typography>
       <Typography variant="h6" gutterBottom>
@@ -81,13 +124,13 @@ export default function BorrowingManagement() {
           </TableHead>
           <TableBody>
             {requests.map((request) => (
-              <TableRow key={request.id}>
-                <TableCell>{request.studentName}</TableCell>
-                <TableCell>{request.bookTitle}</TableCell>
-                <TableCell>{request.requestDate}</TableCell>
+              <TableRow key={request._id}>
+                <TableCell>{request.userId.name}</TableCell>
+                <TableCell>{request.bookId.title}</TableCell>
+                <TableCell>{new Date(request.requestDate).toLocaleDateString()}</TableCell>
                 <TableCell>{request.status}</TableCell>
                 <TableCell>
-                  {request.status === 'Pending' && (
+                  {request.status === 'pending' && (
                     <>
                       <Button 
                         color="primary" 
@@ -126,17 +169,25 @@ export default function BorrowingManagement() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {borrowings.map((borrowing) => (
-              <TableRow key={borrowing.id}>
-                <TableCell>{borrowing.studentName}</TableCell>
-                <TableCell>{borrowing.bookTitle}</TableCell>
-                <TableCell>{borrowing.borrowDate}</TableCell>
-                <TableCell>{borrowing.dueDate}</TableCell>
+            {activeBorrowings.map((borrowing) => (
+              <TableRow key={borrowing._id}>
+                <TableCell>{borrowing.userId.name}</TableCell>
+                <TableCell>{borrowing.bookId.title}</TableCell>
+                <TableCell>{borrowing.borrowDate ? new Date(borrowing.borrowDate).toLocaleDateString() : 'N/A'}</TableCell>
+                <TableCell>{borrowing.dueDate ? new Date(borrowing.dueDate).toLocaleDateString() : 'N/A'}</TableCell>
                 <TableCell>{borrowing.status}</TableCell>
                 <TableCell>
-                  {borrowing.status === 'Borrowed' && (
+                  {borrowing.status === 'approved' && (
                     <Button 
                       color="primary" 
+                      onClick={() => handleAction(borrowing, 'issue')}
+                    >
+                      Issue Book
+                    </Button>
+                  )}
+                  {borrowing.status === 'borrowed' && (
+                    <Button 
+                      color="secondary" 
                       onClick={() => handleAction(borrowing, 'return')}
                     >
                       Return
@@ -153,7 +204,7 @@ export default function BorrowingManagement() {
         <DialogTitle>Confirm Action</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to {action} the {action === 'return' ? 'book' : 'borrowing request'} "{selectedItem?.bookTitle}" {action === 'return' ? 'from' : 'by'} {selectedItem?.studentName}?
+            Are you sure you want to {action} the book "{selectedItem?.bookId.title}" {action === 'return' || action === 'issue' ? 'for' : 'requested by'} {selectedItem?.userId.name}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -163,6 +214,17 @@ export default function BorrowingManagement() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={6000} 
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar> 
     </Container>
   );
 }
+

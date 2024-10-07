@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function BookDetails() {
   const { id } = useParams();
@@ -29,6 +30,7 @@ export default function BookDetails() {
   const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
   const [borrowing, setBorrowing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const { user } = useAuth(); // Get the user from AuthContext
 
   useEffect(() => {
     fetchBookDetails();
@@ -66,15 +68,22 @@ export default function BookDetails() {
   };
 
   const handleBorrowBook = async () => {
+    if (!user) {
+      setSnackbar({ open: true, message: 'Please log in to borrow books.', severity: 'error' });
+      return;
+    }
+
     setBorrowing(true);
     try {
-      await axios.post(`http://localhost:8000/api/v1/books/${id}/borrow`);
+      await axios.post('http://localhost:8000/api/v1/transactions/borrow', { bookId: id }, {
+        withCredentials: true // This is important for sending the authentication cookie
+      });
       setSnackbar({ open: true, message: 'Book borrowed successfully!', severity: 'success' });
       setOpenBorrowDialog(false);
-      fetchBookDetails();
+      fetchBookDetails(); // Refresh book details to update available copies
     } catch (error) {
       console.error('Error borrowing book:', error);
-      setSnackbar({ open: true, message: 'Failed to borrow book. Please try again.', severity: 'error' });
+      setSnackbar({ open: true, message: error.response?.data?.message || 'Failed to borrow book. Please try again.', severity: 'error' });
     } finally {
       setBorrowing(false);
     }
@@ -144,9 +153,9 @@ export default function BookDetails() {
               color="primary" 
               className="mt-4"
               onClick={() => setOpenBorrowDialog(true)}
-              disabled={book.copies - book.borrowedCopies === 0}
+              disabled={book.copies - book.borrowedCopies === 0 || !user}
             >
-              {book.copies - book.borrowedCopies === 0 ? 'Not Available' : 'Borrow Book'}
+              {book.copies - book.borrowedCopies === 0 ? 'Not Available' : (user ? 'Borrow Book' : 'Login to Borrow')}
             </Button>
           </Grid>
         </Grid>

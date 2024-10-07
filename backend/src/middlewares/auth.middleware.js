@@ -36,3 +36,10 @@ export const authorizeRoles = (...roles) => {
     next();
   };
 };
+
+export const authorizeAdmin = asyncHandler(async (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    throw new ApiError(403, "Access denied. Admin rights required.");
+  }
+  next();
+});

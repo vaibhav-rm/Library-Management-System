@@ -3,13 +3,20 @@ import { AppBar, Toolbar, IconButton, Typography, Button, Box, InputBase, alpha 
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 function StudentNavbar({ onMenuClick, isSidebarOpen }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const handleLogout = () => {
-    // Implement logout logic here
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout(); // Call the logout function
+      navigate('/login'); // Redirect to login page after successful logout
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Optionally, you can show an error message to the user here
+    }
   };
 
   return (

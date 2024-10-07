@@ -4,15 +4,13 @@ const transactionSchema = new Schema({
     status: { 
         type: String, 
         required: true, 
-        enum: ['borrowed', 'returned', 'overdue'] 
+        enum: ['pending', 'approved', 'rejected', 'borrowed', 'returned', 'overdue'] 
     },
     borrowDate: { 
-        type: Date, 
-        required: true 
+        type: Date
     },
     dueDate: { 
-        type: Date, 
-        required: true 
+        type: Date
     },
     returnDate: { 
         type: Date 
@@ -26,7 +24,12 @@ const transactionSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'Book', 
         required: true 
+    },
+    requestDate: {
+        type: Date,
+        required: true,
+        default: Date.now
     }
-  }, { timestamps: true });
+}, { timestamps: true });
 
-export const Transaction = mongoose.model("Transaction", transactionSchema)
+export const Transaction = mongoose.model("Transaction", transactionSchema);
