@@ -72,8 +72,7 @@ const Register = () => {
           sx={{ mb: 3, '& .MuiTab-root': { color: 'text.secondary' } }}
         >
           <Tab icon={<School />} label="Student" />
-          <Tab icon={<Work />} label="Admin" />
-        </Tabs>
+            </Tabs>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
           <TextField
             margin="normal"

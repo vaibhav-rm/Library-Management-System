@@ -3,10 +3,10 @@ import {
     addTransaction, 
     getPendingRequests, 
     updateTransactionStatus, 
-    getActiveBorrowings, 
+    getActiveBorrowings,                    
     returnBook,
     issueBook
-} from "../controllers/transaction.controller.js";
+} from "../controllers/transaction.controller.js";      
 import { verifyJWT, authorizeAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
