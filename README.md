@@ -83,6 +83,37 @@ If you want to contribute to this project, feel free to fork the repository and 
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
+## Screenshots
+
+![Login Screenshot](./images/login_page.png)
+
+### Admin Login
+
+![Admin Dashboard](./images/admin_page.png)
+![Book Management](./images/book_management.png)
+
+### Student Login
+
+![Home page](./images/student_page.png)
+![Books](./images/books_page.png)
+
+## API Reference
+
+#### Api url
+
+```http
+ http://localhost:8000/api/v1/{ENDPOINT}
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `ENDPOINT` | `string` | **Required**. which resoruce you want to use |
+
+## For more information visit Project Documentation
+
+ - [LMS Documentation]()
+ - [Api Documentation]()
+
 ## Acknowledgements
 
 - [React](https://reactjs.org/)
