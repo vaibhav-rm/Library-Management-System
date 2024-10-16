@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS Project Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <nav class="bg-white dark:bg-gray-800 fixed w-full z-10 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center">
+                <i class="fas fa-graduation-cap text-primary text-2xl mr-3"></i>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">LMS Project</span>
+            </a>
+            <div class="flex md:order-2">
+                <button type="button" data-collapse-toggle="navbar-search" aria-controls="navbar-search" aria-expanded="false" class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1">
+                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Search</span>
+                </button>
+                <div class="relative hidden md:block">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                        <span class="sr-only">Search icon</span>
+                    </div>
+                    <input type="text" id="search-navbar" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search...">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-16">
+        <aside id="sidebar" class="fixed top-16 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+                <ul class="space-y-2 font-medium">
+                    <li>
+                        <a href="#introduction" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Introduction</span>
+                        </a>
+                    </li>
+                    <li>
+                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-getting-started" data-collapse-toggle="dropdown-getting-started">
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Getting Started</span>
+                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                        <ul id="dropdown-getting-started" class="hidden py-2 space-y-2">
+                            <li>
+                                <a href="#installation" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Installation</a>
+                            </li>
+                            <li>
+                                <a href="#configuration" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Configuration</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-features" data-collapse-toggle="dropdown-features">
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Features</span>
+                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                        <ul id="dropdown-features" class="hidden py-2 space-y-2">
+                            <li>
+                                <a href="#user-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">User Management</a>
+                            </li>
+                            <li>
+                                <a href="#course-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Course Management</a>
+                            </li>
+                            <li>
+                                <a href="#assessment" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Assessment</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-api" data-collapse-toggle="dropdown-api">
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>API Reference</span>
+                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                        <ul id="dropdown-api" class="hidden py-2 space-y-2">
+                            <li>
+                                <a href="#authentication" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Authentication</a>
+                            </li>
+                            <li>
+                                <a href="#endpoints" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Endpoints</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#troubleshooting" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <div class="p-4 sm:ml-64">
+            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+                <main class="max-w-3xl mx-auto">
+                    <section id="introduction" class="mb-8">
+                        <h1 class="text-3xl font-bold mb-4">Introduction</h1>
+                        <p>Welcome to the documentation for our Learning Management System (LMS) project. This guide will help you understand the features and functionality of our LMS, as well as how to set it up and use it effectively.</p>
+                    </section>
+
+                    <section id="getting-started" class="mb-8">
+                        <h1 class="text-3xl font-bold mb-4">Getting Started</h1>
+                        <p>To get started with our LMS, follow these steps:</p>
+                        <h2 id="installation" class="text-2xl font-bold mt-4 mb-2">Installation</h2>
+                        <ol class="list-decimal list-inside mb-4">
+                            <li>Clone the repository: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">git clone https://github.com/vaibhav-rm/Library-Management-System</code></li>
+                            <li>Install dependencies: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">npm install</code></li>
+                        </ol>
+                        <h2 id="configuration" class="text-2xl font-bold mt-4 mb-2">Configuration</h2>
+                        <ol class="list-decimal list-inside">
+                            <li>Set up your environment variables</li>
+                            <li>Run the development server: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">npm run dev</code></li>
+                        </ol>
+                    </section>
+
+                    <section id="features" class="mb-8">
+                        <h1 class="text-3xl font-bold mb-4">Features</h1>
+                        <h2 id="user-management" class="text-2xl font-bold mt-4 mb-2">User Management</h2>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>User registration and authentication</li>
+                            <li>Role-based access control</li>
+                            <li>User profile management</li>
+                        </ul>
+                        <h2 id="course-management" class="text-2xl font-bold mt-4 mb-2">Course Management</h2>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Create and edit courses</li>
+                            <li>Manage course materials and resources</li>
+                            <li>Student enrollment and progress tracking</li>
+                        </ul>
+                        <h2 id="assessment" class="text-2xl font-bold mt-4 mb-2">Assessment</h2>
+                        <ul class="list-disc list-inside">
+                            <li>Create quizzes and assignments</li>
+                            <li>Automated grading</li>
+                            <li>Progress reports and analytics</li>
+                        </ul>
+                    </section>
+
+                    <section id="api-reference" class="mb-8">
+                        <h1 class="text-3xl font-bold mb-4">API Reference</h1>
+                        <h2 id="authentication" class="text-2xl font-bold mt-4 mb-2">Authentication</h2>
+                        <p class="mb-4">Our LMS uses JWT for API authentication. To authenticate, send a POST request to the <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">/api/auth/login</code> endpoint with your credentials.</p>
+                        <h2 id="endpoints" class="text-2xl font-bold mt-4 mb-2">Endpoints</h2>
+                        <p  class="mb-4">Here's a basic example of how to use the API:</p>
+                        <pre class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+fetch('https://api.ourlms.com/v1/courses', {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer YOUR_JWT_TOKEN'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+                        </pre>
+                    </section>
+
+                    <section id="troubleshooting" class="mb-8">
+                        <h1 class="text-3xl font-bold mb-4">Troubleshooting</h1>
+                        <p class="mb-4">If you encounter any issues while using our LMS, please check the following:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Ensure all dependencies are correctly installed</li>
+                            <li>Verify that your environment variables are set correctly</li>
+                            <li>Check the console for any error messages</li>
+                            <li>Refer to our <a href="#" class="text-blue-600 hover:underline">FAQ section</a> for common issues and solutions</li>
+                        </ul>
+                        <p>If you still need assistance, please <a href="#" class="text-blue-600 hover:underline">contact our support team</a>.</p>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 fixed bottom-4 right-4">
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+    </button>
+
+    <script>
+        // Theme toggle functionality
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Change the icons inside the button based on previous settings
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function() {
+            // toggle icons inside button
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // if set via local storage previously
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            // if NOT set via local storage previously
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Sidebar dropdown functionality
+        const sidebarDropdowns = document.querySelectorAll('[data-collapse-toggle]');
+        sidebarDropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', () => {
+                const targetId = dropdown.getAttribute('aria-controls');
+                const targetElement = document.getElementById(targetId);
+                targetElement.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
