@@ -6,6 +6,10 @@
     <title>LMS Project Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -18,6 +22,16 @@
             }
         }
     </script>
+    <style>
+        pre[class*="language-"] {
+            margin: 1em 0;
+            border-radius: 0.5rem;
+        }
+        .highlight {
+            background-color: yellow;
+            color: black;
+        }
+    </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
     <nav class="bg-white dark:bg-gray-800 fixed w-full z-10 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
@@ -27,10 +41,6 @@
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">LMS Project</span>
             </a>
             <div class="flex md:order-2">
-                <button type="button" data-collapse-toggle="navbar-search" aria-controls="navbar-search" aria-expanded="false" class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1">
-                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                    <span class="sr-only">Search</span>
-                </button>
                 <div class="relative hidden md:block">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
@@ -38,6 +48,10 @@
                     </div>
                     <input type="text" id="search-navbar" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search...">
                 </div>
+                <button id="search-button" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <span class="sr-only">Search</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -105,9 +119,9 @@
             </div>
         </aside>
 
-        <div class="p-4 sm:ml-64">
+        <div class="p-4 sm:ml-64 w-full">
             <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-                <main class="max-w-3xl mx-auto">
+                <main class="max-w-full mx-auto">
                     <section id="introduction" class="mb-8">
                         <h1 class="text-3xl font-bold mb-4">Introduction</h1>
                         <p>Welcome to the documentation for our Learning Management System (LMS) project. This guide will help you understand the features and functionality of our LMS, as well as how to set it up and use it effectively.</p>
@@ -117,10 +131,9 @@
                         <h1 class="text-3xl font-bold mb-4">Getting Started</h1>
                         <p>To get started with our LMS, follow these steps:</p>
                         <h2 id="installation" class="text-2xl font-bold mt-4 mb-2">Installation</h2>
-                        <ol class="list-decimal list-inside mb-4">
-                            <li>Clone the repository: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">git clone https://github.com/vaibhav-rm/Library-Management-System</code></li>
-                            <li>Install dependencies: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">npm install</code></li>
-                        </ol>
+                        <pre><code class="language-bash">git clone https://github.com/yourusername/lms-project.git
+cd lms-project
+npm install</code></pre>
                         <h2 id="configuration" class="text-2xl font-bold mt-4 mb-2">Configuration</h2>
                         <ol class="list-decimal list-inside">
                             <li>Set up your environment variables</li>
@@ -152,21 +165,67 @@
 
                     <section id="api-reference" class="mb-8">
                         <h1 class="text-3xl font-bold mb-4">API Reference</h1>
+                
                         <h2 id="authentication" class="text-2xl font-bold mt-4 mb-2">Authentication</h2>
                         <p class="mb-4">Our LMS uses JWT for API authentication. To authenticate, send a POST request to the <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">/api/auth/login</code> endpoint with your credentials.</p>
                         <h2 id="endpoints" class="text-2xl font-bold mt-4 mb-2">Endpoints</h2>
-                        <p  class="mb-4">Here's a basic example of how to use the API:</p>
-                        <pre class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
-fetch('https://api.ourlms.com/v1/courses', {
-    method: 'GET',
-    headers: {
-        'Authorization': 'Bearer YOUR_JWT_TOKEN'
+                        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                                <h3 class="text-xl font-bold">Get Courses</h3>
+                                <span class="px-3 py-1 bg-green-500 text-white rounded-full text-sm">GET</span>
+                            </div>
+                            <div class="px-6 py-4">
+                                <p class="mb-4">Retrieve a list of all courses.</p>
+                                <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                                <pre><code class="language-bash">GET /api/v1/courses</code></pre>
+                                <h4 class="text-lg font-semibold mt-4 mb-2">Parameters</h4>
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">page</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">integer</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Page number (optional, default: 1)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">limit</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">integer</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Number of items per page (optional, default: 10)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                                <pre><code class="language-json">{
+  "data": [
+    {
+      "id": 1,
+      "title": "Introduction to Programming",
+      "description": "Learn the basics of programming",
+      "instructor": "John Doe",
+      "duration": "8 weeks"
+    },
+    {
+      "id": 2,
+      "title": "Web Development Fundamentals",
+      "description": "Master HTML, CSS, and JavaScript",
+      "instructor": "Jane Smith",
+      "duration": "12 weeks"
     }
-})
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error('Error:', error));
-                        </pre>
+  ],
+  "meta": {
+    "current_page": 1,
+    "total_pages": 5,
+    "total_items": 50
+  }
+}</code></pre>
+                            </div>
+                        </div>
                     </section>
 
                     <section id="troubleshooting" class="mb-8">
@@ -248,6 +307,62 @@ fetch('https://api.ourlms.com/v1/courses', {
                 const targetElement = document.getElementById(targetId);
                 targetElement.classList.toggle('hidden');
             });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-navbar');
+        const searchButton = document.getElementById('search-button');
+        const mainContent = document.querySelector('main');
+
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const textNodes = [];
+
+            function getTextNodes(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    textNodes.push(node);
+                } else {
+                    for (let child of node.childNodes) {
+                        getTextNodes(child);
+                    }
+                }
+            }
+
+            getTextNodes(mainContent);
+
+            textNodes.forEach(node => {
+                const parent = node.parentNode;
+                const text = node.textContent;
+                const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
+
+                if (parts.length > 1) {
+                    const fragment = document.createDocumentFragment();
+                    parts.forEach(part => {
+                        if (part.toLowerCase() === searchTerm) {
+                            const span = document.createElement('span');
+                            span.textContent = part;
+                            span.classList.add('highlight');
+                            fragment.appendChild(span);
+                        } else {
+                            fragment.appendChild(document.createTextNode(part));
+                        }
+                    });
+                    parent.replaceChild(fragment, node);
+                }
+            });
+
+            // Scroll to the first highlighted element
+            const firstHighlight = document.querySelector('.highlight');
+            if (firstHighlight) {
+                firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
         });
     </script>
 </body>
