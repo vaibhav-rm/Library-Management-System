@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LMS Project Documentation</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script  >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
@@ -131,13 +131,31 @@
                         <h1 class="text-3xl font-bold mb-4">Getting Started</h1>
                         <p>To get started with our LMS, follow these steps:</p>
                         <h2 id="installation" class="text-2xl font-bold mt-4 mb-2">Installation</h2>
-                        <pre><code class="language-bash">git clone https://github.com/yourusername/lms-project.git
-cd lms-project
+                        <pre><code class="language-bash">git clone https://github.com/vaibhav-rm/Learning-Managemet-System.git
+cd Learning-Managemet-System
 npm install</code></pre>
+
+<h2 class="text-xl mt-4 mb-2">Install backend dependencies</h2>
+<pre><code class="language-bash">cd backend 
+npm install
+</code></pre>
+
                         <h2 id="configuration" class="text-2xl font-bold mt-4 mb-2">Configuration</h2>
                         <ol class="list-decimal list-inside">
-                            <li>Set up your environment variables</li>
+                            <li>Set up your environment variables, use <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded"> .env.sample file</code></li>
+                            <pre><code class="language-env">PORT=backend port
+MONGODB_URI=mongodb url
+CORS_ORIGIN=frontend url
+ACCESS_TOKEN_SECRET=access token string
+ACCESS_TOKEN_EXPIRY=access token expiry time
+REFRESH_TOKEN_SECRET=refresh token string
+REFRESH_TOKEN_EXPIRY=refresh token expiry time
+
+CLOUDINARY_CLOUD_NAME=cloudinary username
+CLOUDINARY_API_KEY=cloudinary key
+CLOUDINARY_API_SECRET=cloudinary secret</code></pre>
                             <li>Run the development server: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">npm run dev</code></li>
+                            <li>Run the backend server: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded"> cd backend, npm run dev</code></li>
                         </ol>
                     </section>
 
@@ -148,18 +166,27 @@ npm install</code></pre>
                             <li>User registration and authentication</li>
                             <li>Role-based access control</li>
                             <li>User profile management</li>
+                            <li>Bytecrypt used to encrypt passwords</li>
                         </ul>
-                        <h2 id="course-management" class="text-2xl font-bold mt-4 mb-2">Course Management</h2>
+                        <h2 id="book-management" class="text-2xl font-bold mt-4 mb-2">Book Management</h2>
                         <ul class="list-disc list-inside mb-4">
-                            <li>Create and edit courses</li>
-                            <li>Manage course materials and resources</li>
-                            <li>Student enrollment and progress tracking</li>
+                            <li>Create and edit books</li>
+                            <li>Manage book materials and resources</li>
+                            <li>Student book issue and due date tracking</li>
+                            <li>Add book by ISBN id with google books api</li>
+                            <li>CURD operations</li>
                         </ul>
-                        <h2 id="assessment" class="text-2xl font-bold mt-4 mb-2">Assessment</h2>
+                        <h2 id="authors" class="text-2xl font-bold mt-4 mb-2">Authors</h2>
                         <ul class="list-disc list-inside">
-                            <li>Create quizzes and assignments</li>
-                            <li>Automated grading</li>
-                            <li>Progress reports and analytics</li>
+                            <li>Add authors and link them to books</li>
+                            <li>Many to many relationship used</li>
+                            <li>CURD operations on author entires</li>
+                        </ul>
+                        <h2 id="mongodb" class="text-2xl font-bold mt-4 mb-2">Mongodb</h2>
+                        <ul class="list-disc list-inside">
+                            <li>Semi structured schema</li>
+                            <li>Record validations in code</li>
+                            <li>Mongoose library used</li>
                         </ul>
                     </section>
 
@@ -167,18 +194,18 @@ npm install</code></pre>
                         <h1 class="text-3xl font-bold mb-4">API Reference</h1>
                 
                         <h2 id="authentication" class="text-2xl font-bold mt-4 mb-2">Authentication</h2>
-                        <p class="mb-4">Our LMS uses JWT for API authentication. To authenticate, send a POST request to the <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">/api/auth/login</code> endpoint with your credentials.</p>
+                        <p class="mb-4">Our LMS uses JWT for API authentication. To authenticate, send a POST request to the <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">http://SERVER_IP:PORT/api/v1/users/login,  http://localhost:8000/api/v1/users/login/</code> for localhost endpoint with your credentials.</p>
                         <h2 id="endpoints" class="text-2xl font-bold mt-4 mb-2">Endpoints</h2>
                         <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
                             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                                <h3 class="text-xl font-bold">Get Courses</h3>
-                                <span class="px-3 py-1 bg-green-500 text-white rounded-full text-sm">GET</span>
+                                <h3 class="text-xl font-bold">Login User</h3>  
+                                <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
                             </div>
                             <div class="px-6 py-4">
-                                <p class="mb-4">Retrieve a list of all courses.</p>
+                                <p class="mb-4">Authenticate User.</p>
                                 <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
-                                <pre><code class="language-bash">GET /api/v1/courses</code></pre>
-                                <h4 class="text-lg font-semibold mt-4 mb-2">Parameters</h4>
+                                <pre><code class="language-bash">POST /api/v1/users/login</code></pre>
+                                <h4 class="text-lg font-semibold mt-4 mb-2">Body    Parameters</h4>
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr>
@@ -189,44 +216,133 @@ npm install</code></pre>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">page</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">integer</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Page number (optional, default: 1)</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">username</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Username registered with</td>
                                         </tr>
                                         <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">limit</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">integer</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Number of items per page (optional, default: 10)</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">password</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Password of the user</td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
                                 <pre><code class="language-json">{
-  "data": [
-    {
-      "id": 1,
-      "title": "Introduction to Programming",
-      "description": "Learn the basics of programming",
-      "instructor": "John Doe",
-      "duration": "8 weeks"
-    },
-    {
-      "id": 2,
-      "title": "Web Development Fundamentals",
-      "description": "Master HTML, CSS, and JavaScript",
-      "instructor": "Jane Smith",
-      "duration": "12 weeks"
-    }
-  ],
-  "meta": {
-    "current_page": 1,
-    "total_pages": 5,
-    "total_items": 50
-  }
+    "statusCode": 200,
+     "data": {
+        "user": {
+            "_id": "670174c6738eb108198069d1",
+            "username": "vaihav",
+            "email": "rathodvaibhav401@gmail.ocm",
+            "fullName": "Vaibahv Rathod",
+            "avatar": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1728148678/sz4g4gzg05mkqg3a6uut.png",
+            "role": "admin",
+            "borrowHistory": [],
+            "createdAt": "2024-10-05T17:17:58.711Z",
+            "updatedAt": "2024-10-18T05:03:32.820Z",
+            "__v": 0
+            },
+            "accessToken": ".vH5oWPg9WzoBPgv-j6-2c8o4mtmmHPZwX0NEJi41hj4",
+            refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..ZY1baIvocwtmOl3VaXfdhpLlK1yrBT31F9bjSyVqC7w"
+            },
+            "success": true
 }</code></pre>
                             </div>
                         </div>
+
+                        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                                <h3 class="text-xl font-bold">Register User</h3>  
+                                <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
+                            </div>
+                            <div class="px-6 py-4">register
+                                <p class="mb-4">Authenticate User.</p>
+                                <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                                <pre><code class="language-bash">POST /api/v1/users/register</code></pre>
+                                <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">fullName</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Fullname of user</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">username</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">unique username</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">role</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">enum</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">student or admin user role</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">email</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">unique email</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">password</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">encrypted password</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">avatar</td>
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Image file</td> 
+                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">avatar image</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                                <pre><code class="language-json">
+{
+    "statusCode": 201,
+    "data": {
+        "_id": "6711f506460f3106b06103c1",
+        "username": "sagar2",
+        "email": "sagar2@gmail.com",
+        "fullName": "sagar rathod",
+        "avatar": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1729230085/eiejjbygbe1mofdm5glm.jpg",  
+        "role": "student",
+        "borrowHistory": [],
+        "createdAt": "2024-10-18T05:41:26.075Z",
+        "updatedAt": "2024-10-18T05:41:26.075Z",
+        "__v": 0
+        },
+        "message": "User registered successfully",
+        "success": true
+}
+</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4">
+                            <p class="mb-4">Logout User.</p>
+                            <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                            <pre><code class="language-bash">POST /api/v1/users/logout/</code></pre>    
+                            <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                            <pre><code class="language-json">{
+    "statusCode": 200,
+    "data": {},
+    "message": "User logged out",
+    "success": true
+}
+</code></pre>
+                        </div>
+                    </div>
+
                     </section>
+
+                    
 
                     <section id="troubleshooting" class="mb-8">
                         <h1 class="text-3xl font-bold mb-4">Troubleshooting</h1>
