@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -97,16 +98,25 @@
                         </ul>
                     </li>
                     <li>
-                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-api" data-collapse-toggle="dropdown-api">
-                            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>API Reference</span>
-                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-api" data-collapse-toggle="dropdown-api" aria-expanded="false">
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap">API Reference</span>
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         </button>
                         <ul id="dropdown-api" class="hidden py-2 space-y-2">
                             <li>
-                                <a href="#authentication" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Authentication</a>
+                                <a href="#api-overview" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Overview</a>
                             </li>
                             <li>
-                                <a href="#endpoints" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Endpoints</a>
+                                <a href="#api-authentication" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Authentication</a>
+                            </li>
+                            <li>
+                                <a href="#api-user-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">User Management</a>
+                            </li>
+                            <li>
+                                <a href="#api-book-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Book Management</a>
+                            </li>
+                            <li>
+                                <a href="#api-author-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Author Management</a>
                             </li>
                         </ul>
                     </li>
@@ -192,294 +202,642 @@ CLOUDINARY_API_SECRET=cloudinary secret</code></pre>
 
                     <section id="api-reference" class="mb-8">
                         <h1 class="text-3xl font-bold mb-4">API Reference</h1>
-                
-                        <h2 id="authentication" class="text-2xl font-bold mt-4 mb-2">Authentication</h2>
-                        <p class="mb-4">Our LMS uses JWT for API authentication. To authenticate, send a POST request to the <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">http://SERVER_IP:PORT/api/v1/users/login,  http://localhost:8000/api/v1/users/login/</code> for localhost endpoint with your credentials.</p>
-                        <h2 id="endpoints" class="text-2xl font-bold mt-4 mb-2">Endpoints</h2>
-                        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
-                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                                <h3 class="text-xl font-bold">Login User</h3>  
-                                <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
-                            </div>
-                            <div class="px-6 py-4">
-                                <p class="mb-4">Authenticate User.</p>
-                                <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
-                                <pre><code class="language-bash">POST /api/v1/users/login</code></pre>
-                                <h4 class="text-lg font-semibold mt-4 mb-2">Body    Parameters</h4>
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr>
-                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
-                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
-                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">username</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Username registered with</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">password</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Password of the user</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
-                                <pre><code class="language-json">{
-    "statusCode": 200,
-     "data": {
-        "user": {
-            "_id": "670174c6738eb108198069d1",
-            "username": "vaihav",
-            "email": "rathodvaibhav401@gmail.ocm",
-            "fullName": "Vaibahv Rathod",
-            "avatar": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1728148678/sz4g4gzg05mkqg3a6uut.png",
-            "role": "admin",
-            "borrowHistory": [],
-            "createdAt": "2024-10-05T17:17:58.711Z",
-            "updatedAt": "2024-10-18T05:03:32.820Z",
-            "__v": 0
-            },
-            "accessToken": ".vH5oWPg9WzoBPgv-j6-2c8o4mtmmHPZwX0NEJi41hj4",
-            refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..ZY1baIvocwtmOl3VaXfdhpLlK1yrBT31F9bjSyVqC7w"
-            },
-            "success": true
-}</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
-                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                                <h3 class="text-xl font-bold">Register User</h3>  
-                                <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
-                            </div>
-                            <div class="px-6 py-4">register
-                                <p class="mb-4">Authenticate User.</p>
-                                <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
-                                <pre><code class="language-bash">POST /api/v1/users/register</code></pre>
-                                <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr>
-                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
-                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
-                                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">fullName</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Fullname of user</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">username</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">unique username</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">role</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">enum</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">student or admin user role</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">email</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">unique email</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">password</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">encrypted password</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">avatar</td>
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Image file</td> 
-                                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">avatar image</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
-                                <pre><code class="language-json">
-{
-    "statusCode": 201,
-    "data": {
-        "_id": "6711f506460f3106b06103c1",
-        "username": "sagar2",
-        "email": "sagar2@gmail.com",
-        "fullName": "sagar rathod",
-        "avatar": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1729230085/eiejjbygbe1mofdm5glm.jpg",  
-        "role": "student",
-        "borrowHistory": [],
-        "createdAt": "2024-10-18T05:41:26.075Z",
-        "updatedAt": "2024-10-18T05:41:26.075Z",
-        "__v": 0
-        },
-        "message": "User registered successfully",
-        "success": true
-}
-</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="px-6 py-4">
-                            <p class="mb-4">Logout User.</p>
-                            <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
-                            <pre><code class="language-bash">POST /api/v1/users/logout/</code></pre>    
-                            <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
-                            <pre><code class="language-json">{
-    "statusCode": 200,
-    "data": {},
-    "message": "User logged out",
-    "success": true
-}
-</code></pre>
-                        </div>
-                    </div>
-
-                    </section>
-
                     
+                        <section id="api-overview">
+                            <h2 class="text-2xl font-bold mt-4 mb-2">Overview</h2>
+                            <p class="mb-4">The LMS API provides programmatic access to user, book, and author management functionalities.</p>
+                            <h3 class="text-xl font-bold mt-4 mb-2">Base URL</h3>
+                            <p class="mb-4">All API requests should be made to: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">http://localhost:8000/api/v1</code></p>
+                        </section>
+                    
+                        <section id="api-authentication">
+                            <h2 class="text-2xl font-bold mt-4 mb-2">Authentication</h2>
+                            <p class="mb-4">Most endpoints require JWT authentication. Include the JWT token in the Authorization header:</p>
+                            <pre><code class="language-plaintext">Authorization: Bearer &lt;your_jwt_token&gt;</code></pre>
+                        </section>
+                    
+                        <section id="api-user-management">
+                            <h2 class="text-2xl font-bold mt-4 mb-2">User Management</h2>
+                    
+                            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                                    <h3 class="text-xl font-bold">Register User</h3>  
+                                    <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
+                                </div>
+                                <div class="px-6 py-4">
+                                    <p class="mb-4">Register a new user.</p>
+                                    <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                                    <pre><code class="language-bash">POST /users/register</code></pre>
+                                    <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr>
+                                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">fullName</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Full name of the user</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">email</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Email address</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">username</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Unique username</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">password</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">User's password</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">role</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">User role (e.g., "student", "admin")</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">avatar</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">File</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">User's avatar image</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                                    <pre><code class="language-json">{
+                        "statusCode": 201,
+                        "data": {
+                            "_id": "6711f506460f3106b06103c1",
+                            "username": "johndoe",
+                            "email": "johndoe@example.com",
+                            "fullName": "John Doe",
+                            "avatar": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1729230085/eiejjbygbe1mofdm5glm.jpg",  
+                            "role": "student",
+                            "borrowHistory": [],
+                            "createdAt": "2024-10-18T05:41:26.075Z",
+                            "updatedAt": "2024-10-18T05:41:26.075Z"
+                        },
+                        "message": "User registered successfully",
+                        "success": true
+                    }</code></pre>
+                                </div>
+                            </div>
+                    
+                            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                                    <h3 class="text-xl font-bold">Login User</h3>  
+                                    <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
+                                </div>
+                                <div class="px-6 py-4">
+                                    <p class="mb-4">Authenticate a user and receive JWT tokens.</p>
+                                    <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                                    <pre><code class="language-bash">POST /users/login</code></pre>
+                                    <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr>
+                                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">username</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">User's username</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">password</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">User's password</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                                    <pre><code class="language-json">{
+                        "statusCode": 200,
+                        "data": {
+                            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        },
+                        "message": "Login successful",
+                        "success": true
+                    }</code></pre>
+                </div>
+            </div>
+    
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Get Current User</h3>  
+                    <span class="px-3 py-1 bg-green-500 text-white rounded-full text-sm">GET</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="mb-4">Get the current logged-in user's details.</p>
+                    <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                    <pre><code class="language-bash">GET /api/v1/users/current-user</code></pre>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                    <pre><code class="language-json">{
+        "statusCode": 200,
+        "data": {
+            "user": {
+                "_id": "670174c6738eb108198069d1",
+                "username": "vaihav",
+                "email": "rathodvaibhav401@gmail.ocm",
+                "fullName": "Vaibahv Rathod",
+                "avatar": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1728148678/sz4g4gzg05mkqg3a6uut.png",
+                "role": "admin",
+                "borrowHistory": [],
+                "createdAt": "2024-10-05T17:17:58.711Z",
+                "updatedAt": "2024-10-18T05:03:32.820Z"
+            }
+        },
+        "success": true
+    }</code></pre>
+                </div>
+            </div>
+    
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Change Password</h3>  
+                    <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="mb-4">Change the user's password.</p>
+                    <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                    <pre><code class="language-bash">POST /api/v1/users/change-password</code></pre>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">oldPassword</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Current password</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">newPassword</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">New password</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                    <pre><code class="language-json">{
+        "statusCode": 200,
+        "data": {},
+        "message": "Password changed successfully",
+        "success": true
+    }</code></pre>
+                </div>
+            </div>
+        </section>
 
-                    <section id="troubleshooting" class="mb-8">
-                        <h1 class="text-3xl font-bold mb-4">Troubleshooting</h1>
-                        <p class="mb-4">If you encounter any issues while using our LMS, please check the following:</p>
-                        <ul class="list-disc list-inside mb-4">
-                            <li>Ensure all dependencies are correctly installed</li>
-                            <li>Verify that your environment variables are set correctly</li>
-                            <li>Check the console for any error messages</li>
-                            <li>Refer to our <a href="#" class="text-blue-600 hover:underline">FAQ section</a> for common issues and solutions</li>
-                        </ul>
-                        <p>If you still need assistance, please <a href="#" class="text-blue-600 hover:underline">contact our support team</a>.</p>
-                    </section>
-                </main>
+        <section id="api-book-management">
+            <h2 class="text-2xl font-bold mt-4 mb-2">Book Management</h2>
+    
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Create Book</h3>  
+                    <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="mb-4">Create a new book entry.</p>
+                    <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                    <pre><code class="language-bash">POST /books</code></pre>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">title</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Book title</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">author</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Book author</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">ISBN</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Book ISBN</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">description</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Book description</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">coverImage</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">File</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Book cover image</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                    <pre><code class="language-json">{
+        "statusCode": 201,
+        "data": {
+            "_id": "6711f506460f3106b06103c2",
+            "title": "Sample Book",
+            "author": "John Doe",
+            "ISBN": "1234567890",
+            "description": "A sample book description",
+            "coverImage": "http://res.cloudinary.com/dxnlnwccr/image/upload/v1729230086/abcdefghijklmno.jpg",
+            "createdAt": "2024-10-18T05:41:26.075Z",
+            "updatedAt": "2024-10-18T05:41:26.075Z"
+        },
+        "message": "Book created successfully",
+        "success": true
+    }</code></pre>
+                </div>
+            </div>
+    
+            <!-- Add more book management endpoints here (e.g., Get Books, Update Book, Delete Book) -->
+        </section>
+    
+        <section id="api-author-management">
+            <h2 class="text-2xl font-bold mt-4 mb-2">Author Management</h2>
+    
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Create Author</h3>  
+                    <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">POST</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="mb-4">Create a new author entry.</p>
+                    <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                    <pre><code class="language-bash">POST /authors</code></pre>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                                <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">name</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Author's name</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">biography</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                                <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Author's biography</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                    <pre><code class="language-json">{
+        "statusCode": 201,
+        "data": {
+            "_id": "6711f506460f3106b06103c3",
+            "name": "John Doe",
+            "biography": "A prolific author with multiple bestsellers.",
+            "createdAt": "2024-10-18T05:41:26.075Z",
+            "updatedAt": "2024-10-18T05:41:26.075Z"
+        },
+        "message": "Author created successfully",
+        "success": true
+    }</code></pre>
+                </div>
+            </div>
+    
+        <h2 id="authors" class="text-2xl font-bold mt-4 mb-2">Authors</h2>
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold">Get All Authors</h3>  
+                <span class="px-3 py-1 bg-green-500 text-white rounded-full text-sm">GET</span>
+            </div>
+            <div class="px-6 py-4">
+                <p class="mb-4">Retrieve a list of all authors.</p>
+                <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                <pre><code class="language-bash">GET /authors</code></pre>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                <pre><code class="language-json">{
+    "statusCode": 200,
+    "data": {
+        "authors": [
+            {
+                "_id": "6711f506460f3106b06103c3",
+                "name": "John Doe",
+                "biography": "A prolific author with multiple bestsellers.",
+                "createdAt": "2024-10-18T05:41:26.075Z",
+                "updatedAt": "2024-10-18T05:41:26.075Z"
+            },
+            // ... more authors ...
+        ]
+    },
+    "success": true
+}</code></pre>
             </div>
         </div>
-    </div>
 
-    <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 fixed bottom-4 right-4">
-        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-    </button>
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mb-4">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold">Create Author</h3>  
+                <span class="px-3 py-1 bg-green-500 text-white rounded-full text-sm">POST</span>
+            </div>
+            <div class="px-6 py-4">
+                <p class="mb-4">Create a new author.</p>
+                <h4 class="text-lg font-semibold mb-2">Endpoint</h4>
+                <pre><code class="language-bash">POST /authors</code></pre>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Body Parameters</h4>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Name</th>
+                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Type</th>
+                            <th class="py-2 px-4 bg-gray-100 dark:bg-gray-700 font-semibold">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">name</td>
+                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Author's name</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">biography</td>
+                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">String</td>
+                            <td class="py-2 px-4 border-t border-gray-200 dark:border-gray-700">Author's biography</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Response</h4>
+                <pre><code class="language-json">{
+    "statusCode": 201,
+    "data": {
+        "_id": "6711f506460f3106b06103c3",
+        "name": "John Doe",
+        "biography": "A prolific author with multiple bestsellers.",
+        "createdAt": "2024-10-18T05:41:26.075Z",
+        "updatedAt": "2024-10-18T05:41:26.075Z"
+    },
+    "message": "Author created successfully",
+    "success": true
+}</code></pre>
+            </div>        </section>
+    </section>
 
-    <script>
-        // Theme toggle functionality
-        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        <h2 id="backend-structure" class="text-2xl font-bold mt-4 mb-2">Backend Structure</h2>
+        <p class="mb-4">The backend of our LMS is built using Node.js and Express.js. Here's an overview of the main components:</p>
+        <ul class="list-disc list-inside mb-4">
+            <li>Server setup and configuration</li>
+            <li>Database connection (MongoDB)</li>
+            <li>Middleware for authentication and error handling</li>
+            <li>Routes for different API endpoints</li>
+            <li>Controllers for handling business logic</li>
+            <li>Models for database schema definitions</li>
+        </ul>
 
-        // Change the icons inside the button based on previous settings
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            themeToggleLightIcon.classList.remove('hidden');
+        <h2 id="backend-technologies" class="text-2xl font-bold mt-4 mb-2">Backend Technologies</h2>
+        <ul class="list-disc list-inside mb-4">
+            <li>Node.js</li>
+            <li>Express.js</li>
+            <li>MongoDB (with Mongoose ORM)</li>
+            <li>JWT for authentication</li>
+            <li>Bcrypt for password hashing</li>
+            <li>Cloudinary for image storage</li>
+        </ul>
+
+        <h2 id="backend-folder-structure" class="text-2xl font-bold mt-4 mb-2">Backend Folder Structure</h2>
+        <pre><code class="language-plaintext">
+backend/
+├── config/
+│   └── database.js
+├── controllers/
+│   ├── userController.js
+│   └── bookController.js
+├── middleware/
+│   ├── auth.js
+│   └── errorHandler.js
+├── models/
+│   ├── User.js
+│   └── Book.js
+├── routes/
+│   ├── userRoutes.js
+│   └── bookRoutes.js
+├── utils/
+│   └── apiResponse.js
+├── .env
+└── server.js
+    </code></pre>
+
+        <h2 id="backend-setup" class="text-2xl font-bold mt-4 mb-2">Backend Setup</h2>
+        <ol class="list-decimal list-inside mb-4">
+            <li>Navigate to the backend directory: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">cd backend</code></li>
+            <li>Install dependencies: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">npm install</code></li>
+            <li>Set up environment variables in the <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">.env</code> file</li>
+            <li>Start the development server: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">npm run dev</code></li>
+        </ol>
+
+        <section id="api-standard-responses" class="mb-8">
+            <h2 class="text-2xl font-bold mt-4 mb-2">Standard API Responses</h2>
+            <p class="mb-4">This API uses standardized response and error formats to ensure consistency across all endpoints.</p>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Success Responses</h3>
+            <p class="mb-4">All successful API responses follow this structure:</p>
+            <pre><code class="language-json">{
+    "statusCode": number,
+    "data": object | null,
+    "message": string,
+    "success": boolean
+}</code></pre>
+            <p class="mt-2 mb-4">Example of a successful response:</p>
+            <pre><code class="language-json">{
+    "statusCode": 200,
+    "data": {
+        "user": {
+            "id": "123",
+            "username": "johndoe"
+        }
+    },
+    "message": "User retrieved successfully",
+    "success": true
+}</code></pre>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Error Responses</h3>
+            <p class="mb-4">All error responses follow this structure:</p>
+            <pre><code class="language-json">{
+    "statusCode": number,
+    "data": null,
+    "message": string,
+    "success": false,
+    "errors": array
+}</code></pre>
+            <p class="mt-2 mb-4">Example of an error response:</p>
+            <pre><code class="language-json">{
+    "statusCode": 400,
+    "data": null,
+    "message": "Validation error",
+    "success": false,
+    "errors": [
+        "Username is required",
+        "Email must be a valid email address"
+    ]
+}</code></pre>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Implementation Details</h3>
+            <p class="mb-4">The API uses two utility classes to generate these standardized responses:</p>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">ApiResponse Class</h4>
+            <p class="mb-4">Used for successful responses:</p>
+            <pre><code class="language-javascript">class ApiResponse {
+    constructor(statusCode, data, message = "Success"){
+        this.statusCode = statusCode
+        this.data = data
+        this.message = message
+        this.success = statusCode < 400 
+    }
+}</code></pre>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">ApiError Class</h4>
+            <p class="mb-4">Used for error responses:</p>
+            <pre><code class="language-javascript">class ApiError extends Error {
+    constructor(
+        statusCode,
+        message = "Something went wrong",
+        errors = [],
+        stack = ""
+    ){
+        super(message)
+        this.statusCode = statusCode
+        this.data = null
+        this.message = message
+        this.success = false
+        this.errors = errors
+
+        if (stack) {
+            this.stack = stack
         } else {
-            themeToggleDarkIcon.classList.remove('hidden');
+            Error.captureStackTrace(this, this.constructor)
+        }
+    }
+}</code></pre>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Usage Examples</h3>
+            <p class="mb-4">Here are some examples of how to use these classes in your API controllers:</p>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Successful Response Example</h4>
+            <pre><code class="language-javascript">import { ApiResponse } from '../utils/ApiResponse.js';
+
+const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        
+        if (!user) {
+            throw new ApiError(404, "User not found");
         }
 
-        var themeToggleBtn = document.getElementById('theme-toggle');
+        const response = new ApiResponse(200, { user }, "User profile retrieved successfully");
+        res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+};</code></pre>
 
-        themeToggleBtn.addEventListener('click', function() {
-            // toggle icons inside button
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
+            <h4 class="text-lg font-semibold mt-4 mb-2">Error Handling Example</h4>
+            <pre><code class="language-javascript">import { ApiError } from '../utils/ApiError.js';
 
-            // if set via local storage previously
-            if (localStorage.getItem('color-theme')) {
-                if (localStorage.getItem('color-theme') === 'light') {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                }
-            // if NOT set via local storage previously
-            } else {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                }
-            }
+const createUser = async (req, res, next) => {
+    try {
+        const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            throw new ApiError(400, "All fields are required");
+        }
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            throw new ApiError(409, "User with this email already exists");
+        }
+
+        // ... create user logic ...
+
+        const response = new ApiResponse(201, { user: newUser }, "User created successfully");
+        res.status(201).json(response);
+    } catch (error) {
+        next(error);
+    }
+};</code></pre>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Global Error Handling Middleware</h4>
+            <p class="mb-4">You can use a global error handling middleware to catch and format all errors:</p>
+            <pre><code class="language-javascript">import { ApiError } from '../utils/ApiError.js';
+
+const errorHandler = (err, req, res, next) => {
+    if (err instanceof ApiError) {
+        return res.status(err.statusCode).json({
+            statusCode: err.statusCode,
+            data: err.data,
+            message: err.message,
+            success: false,
+            errors: err.errors
         });
+    }
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+    // For unhandled errors
+    const response = new ApiError(500, "Something went wrong", []);
+    res.status(500).json(response);
+};
 
-        // Sidebar dropdown functionality
-        const sidebarDropdowns = document.querySelectorAll('[data-collapse-toggle]');
-        sidebarDropdowns.forEach(dropdown => {
-            dropdown.addEventListener('click', () => {
-                const targetId = dropdown.getAttribute('aria-controls');
+export default errorHandler;</code></pre>
+
+            <p class="mt-4 mb-4">
+                By using these standardized classes and a global error handler, you ensure consistent 
+                response formats across your entire API. This makes it easier for frontend developers 
+                to handle responses and errors in a uniform way.
+            </p>
+        </section>
+
+
+        </div>
+
+        <script>
+          // Custom JavaScript for sidebar functionality
+          document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggleItems = document.querySelectorAll('[data-collapse-toggle]');
+            
+            sidebarToggleItems.forEach(function(item) {
+              item.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-collapse-toggle');
                 const targetElement = document.getElementById(targetId);
-                targetElement.classList.toggle('hidden');
-            });
-        });
-
-        // Search functionality
-        const searchInput = document.getElementById('search-navbar');
-        const searchButton = document.getElementById('search-button');
-        const mainContent = document.querySelector('main');
-
-        function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const textNodes = [];
-
-            function getTextNodes(node) {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    textNodes.push(node);
-                } else {
-                    for (let child of node.childNodes) {
-                        getTextNodes(child);
-                    }
+                
+                if (targetElement) {
+                  targetElement.classList.toggle('hidden');
+                  
+                  // Toggle the aria-expanded attribute
+                  const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                  this.setAttribute('aria-expanded', !isExpanded);
                 }
-            }
-
-            getTextNodes(mainContent);
-
-            textNodes.forEach(node => {
-                const parent = node.parentNode;
-                const text = node.textContent;
-                const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
-
-                if (parts.length > 1) {
-                    const fragment = document.createDocumentFragment();
-                    parts.forEach(part => {
-                        if (part.toLowerCase() === searchTerm) {
-                            const span = document.createElement('span');
-                            span.textContent = part;
-                            span.classList.add('highlight');
-                            fragment.appendChild(span);
-                        } else {
-                            fragment.appendChild(document.createTextNode(part));
-                        }
-                    });
-                    parent.replaceChild(fragment, node);
-                }
+              });
             });
-
-            // Scroll to the first highlighted element
-            const firstHighlight = document.querySelector('.highlight');
-            if (firstHighlight) {
-                firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-
-        searchButton.addEventListener('click', performSearch);
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-    </script>
-</body>
+          });
+        </script>
+    </body>
 </html>
