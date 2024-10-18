@@ -963,9 +963,19 @@ Learning-Management-System/
 
         <footer class="text-center py-4 mt-8 border-t border-gray-200 dark:border-gray-700">
             <p class="text-sm text-gray-600 dark:text-gray-400">
-                Made with ❤️ in GPT Vijaypur by vaibhav-rm
+                Made with <span class="animate-pulse inline-block">❤️</span> in GPT Vijaypur by vaibhav-rm
             </p>
         </footer>
+
+        <style>
+            @keyframes heartbeat {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+            .animate-pulse {
+                animation: heartbeat 1s infinite;
+            }
+        </style>
 
         <script>
           // Custom JavaScript for sidebar functionality
