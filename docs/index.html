@@ -67,33 +67,19 @@
                         </a>
                     </li>
                     <li>
-                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-getting-started" data-collapse-toggle="dropdown-getting-started">
-                            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Getting Started</span>
-                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-project-overview" data-collapse-toggle="dropdown-project-overview">
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap">Project Overview</span>
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         </button>
-                        <ul id="dropdown-getting-started" class="hidden py-2 space-y-2">
+                        <ul id="dropdown-project-overview" class="hidden py-2 space-y-2">
                             <li>
-                                <a href="#installation" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Installation</a>
+                                <a href="#project-structure" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Project Structure</a>
                             </li>
                             <li>
-                                <a href="#configuration" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Configuration</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-features" data-collapse-toggle="dropdown-features">
-                            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Features</span>
-                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        </button>
-                        <ul id="dropdown-features" class="hidden py-2 space-y-2">
-                            <li>
-                                <a href="#user-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">User Management</a>
+                                <a href="#key-features" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Key Features</a>
                             </li>
                             <li>
-                                <a href="#course-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Course Management</a>
-                            </li>
-                            <li>
-                                <a href="#assessment" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Assessment</a>
+                                <a href="#development-practices" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Development Practices</a>
                             </li>
                         </ul>
                     </li>
@@ -110,6 +96,9 @@
                                 <a href="#api-authentication" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Authentication</a>
                             </li>
                             <li>
+                                <a href="#api-standard-responses" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Standard Responses</a>
+                            </li>
+                            <li>
                                 <a href="#api-user-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">User Management</a>
                             </li>
                             <li>
@@ -119,6 +108,31 @@
                                 <a href="#api-author-management" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Author Management</a>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="#extending-the-project" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Extending the Project</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#common-utilities" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Common Utilities</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#testing" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Testing</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#deployment" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Deployment</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contributing" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ml-3">Contributing</span>
+                        </a>
                     </li>
                     <li>
                         <a href="#troubleshooting" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -214,6 +228,32 @@ CLOUDINARY_API_SECRET=cloudinary secret</code></pre>
                             <h2 class="text-2xl font-bold mt-4 mb-2">Authentication</h2>
                             <p class="mb-4">Most endpoints require JWT authentication. Include the JWT token in the Authorization header:</p>
                             <pre><code class="language-plaintext">Authorization: Bearer &lt;your_jwt_token&gt;</code></pre>
+                        </section>
+                    
+                        <section id="api-standard-responses">
+                            <h2 class="text-2xl font-bold mt-4 mb-2">Standard Responses</h2>
+                            <p class="mb-4">The API uses standardized response and error formats, implemented through <code>ApiResponse</code> and <code>ApiError</code> classes.</p>
+                            <h3 class="text-xl font-bold mt-4 mb-2">Success Response</h3>
+                            <pre><code class="language-json">{
+    "statusCode": 200,
+    "data": {
+        "key": "value"
+    },
+    "message": "Success message",
+    "success": true
+}</code></pre>
+                            <h3 class="text-xl font-bold mt-4 mb-2">Error Response</h3>
+                            <pre><code class="language-json">{
+    "statusCode": 400,
+    "message": "Error message",
+    "errors": [
+        {
+            "path": "field",
+            "message": "Error message for field"
+        }
+    ],
+    "success": false
+}</code></pre>
                         </section>
                     
                         <section id="api-user-management">
@@ -689,8 +729,7 @@ backend/
     "message": string,
     "success": false,
     "errors": array
-}</code></pre>
-            <p class="mt-2 mb-4">Example of an error response:</p>
+}</code></pre>            <p class="mt-2 mb-4">Example of an error response:</p>
             <pre><code class="language-json">{
     "statusCode": 400,
     "data": null,
@@ -815,8 +854,118 @@ export default errorHandler;</code></pre>
             </p>
         </section>
 
+        <section id="project-overview" class="mb-8">
+            <h2 class="text-2xl font-bold mt-4 mb-2">Project Overview</h2>
+            <p class="mb-4">This Learning Management System (LMS) is built with a focus on modularity, scalability, and ease of maintenance. Here are some key aspects of the project structure and development practices:</p>
 
+            <h3 class="text-xl font-bold mt-4 mb-2">Project Structure</h3>
+            <pre><code class="language-plaintext">
+Learning-Management-System/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middlewares/
+│   │   ├── utils/
+│   │   └── config/
+│   ├── tests/
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── utils/
+│   └── package.json
+└── README.md
+    </code></pre>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Key Features</h3>
+            <ul class="list-disc pl-6 mb-4">
+                <li>RESTful API design</li>
+                <li>JWT-based authentication</li>
+                <li>Role-based access control (RBAC)</li>
+                <li>MongoDB database with Mongoose ORM</li>
+                <li>Error handling middleware</li>
+                <li>Input validation using express-validator</li>
+                <li>File uploads with Cloudinary integration</li>
+                <li>Standardized API responses</li>
+            </ul>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Development Practices</h3>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Use of ES6+ features</li>
+                <li>Asynchronous programming with async/await</li>
+                <li>Environment-based configuration using dotenv</li>
+                <li>Code linting with ESLint</li>
+                <li>Git version control with feature branching</li>
+            </ul>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Extending the Project</h3>
+            <p class="mb-4">To add new features or modify existing ones:</p>
+            <ol class="list-decimal pl-6 mb-4">
+                <li>Create or update the necessary model in <code>src/models/</code></li>
+                <li>Implement the controller logic in <code>src/controllers/</code></li>
+                <li>Define the routes in <code>src/routes/</code></li>
+                <li>Add any required middleware in <code>src/middlewares/</code></li>
+                <li>Update the API documentation in this file</li>
+            </ol>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Common Utilities</h3>
+            <p class="mb-4">The project includes several utility functions and classes to simplify development:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>ApiResponse</code> and <code>ApiError</code> for standardized responses</li>
+                <li><code>asyncHandler</code> for cleaner async route handling</li>
+                <li><code>uploadToCloudinary</code> for file uploads</li>
+                <li>Custom validators and sanitizers</li>
+            </ul>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Testing</h3>
+            <p class="mb-4">We use Jest for unit and integration testing. To run tests:</p>
+            <pre><code class="language-bash">npm run test</code></pre>
+            <p class="mt-2 mb-4">When adding new features, please include relevant test cases in the <code>tests/</code> directory.</p>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Deployment</h3>
+            <p class="mb-4">The project is set up for easy deployment to platforms like Heroku or DigitalOcean. Make sure to set the following environment variables:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>NODE_ENV</li>
+                <li>PORT</li>
+                <li>MONGODB_URI</li>
+                <li>JWT_SECRET</li>
+                <li>CLOUDINARY_CLOUD_NAME</li>
+                <li>CLOUDINARY_API_KEY</li>
+                <li>CLOUDINARY_API_SECRET</li>
+            </ul>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Contributing</h3>
+            <p class="mb-4">We welcome contributions! Please follow these steps:</p>
+            <ol class="list-decimal pl-6 mb-4">
+                <li>Fork the repository</li>
+                <li>Create a feature branch (<code>git checkout -b feature/AmazingFeature</code>)</li>
+                <li>Commit your changes (<code>git commit -m 'Add some AmazingFeature'</code>)</li>
+                <li>Push to the branch (<code>git push origin feature/AmazingFeature</code>)</li>
+                <li>Open a Pull Request</li>
+            </ol>
+
+            <h3 class="text-xl font-bold mt-4 mb-2">Troubleshooting</h3>
+            <p class="mb-4">If you encounter any issues, please check the following:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Ensure all dependencies are installed (<code>npm install</code>)</li>
+                <li>Verify that your <code>.env</code> file is set up correctly</li>
+                <li>Check the console and server logs for any error messages</li>
+                <li>Ensure MongoDB is running and accessible</li>
+                <li>For authentication issues, verify that your JWT token is valid and not expired</li>
+            </ul>
+            <p class="mb-4">If problems persist, please open an issue on the GitHub repository with a detailed description of the problem and steps to reproduce it.</p>
+        </section>
         </div>
+
+        <footer class="text-center py-4 mt-8 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+                Made with ❤️ in GPT Vijaypur by vaibhav-rm
+            </p>
+        </footer>
 
         <script>
           // Custom JavaScript for sidebar functionality
